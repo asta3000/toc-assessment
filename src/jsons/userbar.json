@@ -1,0 +1,37 @@
+[
+  {
+    "name": "Хянах самбар",
+    "name_en": "Dashboard",
+    "link": "/dashboard",
+    "status": true,
+    "role": ["ADMIN", "VERIFIER", "ORGANIZATION"]
+  },
+  {
+    "name": "Үнэлгээнүүд",
+    "name_en": "Assessments",
+    "link": "/assessments",
+    "status": true,
+    "role": ["ADMIN", "VERIFIER", "ORGANIZATION"]
+  },
+  {
+    "name": "Бүртгэл",
+    "name_en": "Registration",
+    "link": "/registration/faq",
+    "status": true,
+    "role": ["VERIFIER"]
+  },
+  {
+    "name": "Тусламж",
+    "name_en": "Supports",
+    "link": "/supports",
+    "status": true,
+    "role": ["ADMIN", "VERIFIER", "ORGANIZATION"]
+  },
+  {
+    "name": "Админ хэсэг",
+    "name_en": "Admin",
+    "link": "/organizations/organizations",
+    "status": true,
+    "role": ["ADMIN"]
+  }
+]

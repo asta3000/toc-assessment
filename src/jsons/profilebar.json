@@ -1,0 +1,14 @@
+[
+  {
+    "name": "Өөрийн мэдээлэл",
+    "name_en": "Profile",
+    "link": "/profile",
+    "status": true
+  },
+  {
+    "name": "Нууц үг солих",
+    "name_en": "Change Password",
+    "link": "/changepassword",
+    "status": true
+  }
+]

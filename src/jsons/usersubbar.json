@@ -1,0 +1,35 @@
+[
+  {
+    "title": "registration",
+    "menus": [
+      {
+        "name": "Нийтлэг асуулт, хариулт",
+        "name_en": "FAQ",
+        "link": "/registration/faq",
+        "status": true,
+        "role": ["VERIFIER"]
+      },
+      {
+        "name": "Асуулт, хариулт",
+        "name_en": "Questions and answers",
+        "link": "/registration/questionsanswers",
+        "status": true,
+        "role": ["VERIFIER"]
+      },
+      {
+        "name": "Дүгнэлт",
+        "name_en": "Summary",
+        "link": "/registration/summaries",
+        "status": true,
+        "role": ["VERIFIER"]
+      },
+      {
+        "name": "Зөвлөмж",
+        "name_en": "Advices",
+        "link": "/registration/advices",
+        "status": true,
+        "role": ["VERIFIER"]
+      }
+    ]
+  }
+]

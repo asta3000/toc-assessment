@@ -1,0 +1,37 @@
+[
+  {
+    "name": "Байгууллага",
+    "name_en": "Organizations",
+    "link": "/organizations/organizations",
+    "status": true,
+    "role": ["ADMIN"]
+  },
+  {
+    "name": "Суурь бүртгэл",
+    "name_en": "Bases",
+    "link": "/bases/parameters",
+    "status": true,
+    "role": ["ADMIN"]
+  },
+  {
+    "name": "Бизнес бүртгэл",
+    "name_en": "Businesses",
+    "link": "/businesses/assessments",
+    "status": true,
+    "role": ["ADMIN"]
+  },
+  {
+    "name": "Файлын сан",
+    "name_en": "File library",
+    "link": "/files",
+    "status": true,
+    "role": ["ADMIN"]
+  },
+  {
+    "name": "Баталгаажуулах хэсэг",
+    "name_en": "Verify",
+    "link": "/dashboard",
+    "status": true,
+    "role": ["ADMIN"]
+  }
+]

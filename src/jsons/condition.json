@@ -1,0 +1,6 @@
+{
+  "name": "Нөхцөл",
+  "name_en": "Condition",
+  "field": "condition",
+  "type": "number"
+}

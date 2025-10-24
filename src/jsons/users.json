@@ -1,0 +1,81 @@
+[
+  {
+    "name": "Овог",
+    "align": "center",
+    "field": "lastname",
+    "type": "text"
+  },
+  {
+    "name": "Нэр",
+    "align": "center",
+    "field": "firstname",
+    "type": "text"
+  },
+  {
+    "name": "Имэйл",
+    "align": "center",
+    "field": "email",
+    "type": "email"
+  },
+  {
+    "name": "Нууц үг",
+    "align": "center",
+    "field": "password",
+    "type": "password"
+  },
+  {
+    "name": "Батлах нууц үг",
+    "align": "center",
+    "field": "confirmPassword",
+    "type": "password"
+  },
+  {
+    "name": "Утасны дугаар",
+    "align": "center",
+    "field": "mobile",
+    "type": "text"
+  },
+  {
+    "name": "Албан тушаал",
+    "align": "center",
+    "field": "position",
+    "type": "text"
+  },
+  {
+    "name": "Хүйс",
+    "align": "center",
+    "field": "gender",
+    "type": "select",
+    "selection": [
+      { "value": "MALE", "description": "Эрэгтэй" },
+      { "value": "FEMALE", "description": "Эмэгтэй" }
+    ]
+  },
+  {
+    "name": "Байгууллага",
+    "align": "center",
+    "field": "organizationId",
+    "type": "select"
+  },
+  {
+    "name": "Үүрэг",
+    "align": "center",
+    "field": "role",
+    "type": "select",
+    "selection": [
+      { "value": "ADMIN", "description": "Админ" },
+      { "value": "VERIFIER", "description": "Баталгаажуулагч" },
+      { "value": "ORGANIZATION", "description": "Байгууллага" }
+    ]
+  },
+  {
+    "name": "Төлөв",
+    "align": "center",
+    "field": "status",
+    "type": "select",
+    "selection": [
+      { "value": true, "description": "Идэвхтэй" },
+      { "value": false, "description": "Идэвхгүй" }
+    ]
+  }
+]

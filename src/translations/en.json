@@ -1,0 +1,148 @@
+{
+  "auth": {
+    "Email": "Email",
+    "Password": "Password",
+    "ConfirmPassword": "Confirm Password",
+    "CreateAccount": "Create Account",
+    "LogIn": "Log In",
+    "RecoverAccount": "Recover Account",
+    "LogOut": "Log Out",
+    "SendOTP": "Send OTP",
+    "OTP": "One Time Password",
+    "Verify": "Verify"
+  },
+  "language": {
+    "English": "English",
+    "Mongolian": "Mongolian",
+    "ChangeMongolian": "Монгол хэл рүү солих"
+  },
+  "error": {
+    "NotFound": "Apologize. Page not found",
+    "Error": "Apologize. There is any error",
+    "link": "Go to main page",
+    "NoDataFound": "No Data found"
+  },
+  "action": {
+    "loading": "Please wait...",
+    "title": "Action",
+    "Add": "Add Item",
+    "Search": "Search",
+    "Cancel": "Cancel",
+    "Edit": "Edit Item",
+    "Change": "Change Item",
+    "Detail": "More Details",
+    "ChangePassword": "Change Password",
+    "Option": "Options",
+    "Save": "Save",
+    "Start": "Start",
+    "SaveSend": "Save and Send",
+    "SaveAllSend": "Save All and Send",
+    "Send": "Send"
+  },
+  "organizations": {
+    "organizations": {
+      "title": "Organizations"
+    },
+    "users": {
+      "title": "Users"
+    },
+    "profile": {
+      "organization": { "title": "My Organization" },
+      "staff": { "title": "My Profile" },
+      "changepassword": { "title": "Change Own Password" }
+    }
+  },
+  "files": {
+    "title": "File library",
+    "SelectedFile": "Selected file: ",
+    "FileNotFound": "File Not Found.",
+    "Upload": "Upload",
+    "Download": "Download",
+    "Delete": "Delete"
+  },
+  "bases": {
+    "parameters": {
+      "title": "Parameters"
+    },
+    "sectors": {
+      "title": "Sectors"
+    },
+    "operations": {
+      "title": "Operations"
+    },
+    "members": {
+      "title": "Member Types"
+    },
+    "statuses": {
+      "title": "Status of assessment"
+    },
+    "symbols": {
+      "title": "Symbols"
+    },
+    "years": {
+      "title": "Years"
+    },
+    "contacts": {
+      "title": "Contacts"
+    },
+    "guides": {
+      "title": "Guides"
+    }
+  },
+  "businesses": {
+    "assessments": {
+      "title": "Assessments"
+    },
+    "modules": {
+      "title": "Modules"
+    },
+    "questiontypes": {
+      "title": "Types of question"
+    },
+    "answertypes": {
+      "title": "Types of answer"
+    },
+    "faqs": {
+      "title": "FAQs"
+    },
+    "questionsanswers": {
+      "title": "Questions and Answers",
+      "score": "Score",
+      "optionEN": "Option in English",
+      "optionMN": "Option in Mongolian",
+      "questionMN": "Question in Option (Mongolian)",
+      "questionEN": "Question in Option (English)",
+      "answerType": "Type of answer",
+      "subQuestionEN": "Sub Question in English",
+      "subQuestionMN": "Sub Question in Mongolian",
+      "numberOption": "Number of Options",
+      "status": "Status",
+      "option": "Options of answer",
+      "SubQuestions": "Sub Questions",
+      "numberSubQuestion": "Number of Sub Questions"
+    }
+  },
+  "assessment": {
+    "organization": "Participate",
+    "verifier": "Verify",
+    "summary": "View Summary",
+    "accept": "Accept",
+    "Question": "Question",
+    "Option": "Options",
+    "Description": "Description",
+    "Abstract": "Abstract",
+    "Goal": "Goal",
+    "Content": "Content",
+    "Attachment": "File attachment",
+    "decline": "Decline"
+  },
+  "verification": {
+    "organization": "Organization name",
+    "year": "Year",
+    "assessment": "Assessment name",
+    "verifierScore": "Verifier Score",
+    "organizationScore": "Organization Score",
+    "answerOption": "Answer Option",
+    "comment": "Verifier's comment"
+  }
+}

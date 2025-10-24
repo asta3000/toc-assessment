@@ -1,0 +1,148 @@
+{
+  "auth": {
+    "Email": "Имэйл",
+    "Password": "Нууц үг",
+    "ConfirmPassword": "Батлах нууц үг",
+    "CreateAccount": "Бүртгэл үүсгэх",
+    "LogIn": "Нэвтрэх",
+    "RecoverAccount": "Бүртгэл сэргээх",
+    "LogOut": "Гарах",
+    "SendOTP": "Код илгээх",
+    "OTP": "Нэг удаагийн нууц үг",
+    "Verify": "Баталгаажуулах"
+  },
+  "language": {
+    "English": "Англи хэл",
+    "Mongolian": "Монгол хэл",
+    "ChangeEnglish": "Change to English"
+  },
+  "error": {
+    "NotFound": "Уучлаарай. Хуудас олдсонгүй",
+    "Error": "Уучлаарай. Алдаа гарлаа",
+    "link": "Нүүр хуудас руу очих",
+    "NoDataFound": "Өгөгдөл олдсонгүй"
+  },
+  "action": {
+    "loading": "Түр хүлээнэ үү...",
+    "Add": "Бүртгэл нэмэх",
+    "Search": "Хайх",
+    "title": "Үйлдэл",
+    "Cancel": "Хаах",
+    "Edit": "Бүртгэл засах",
+    "Change": "Бүртгэл өөрчлөх",
+    "Detail": "Дэлгэрэнгүй харах",
+    "ChangePassword": "Нууц үг өөрчлөх",
+    "Option": "Хариултууд",
+    "Save": "Хадгалах",
+    "Start": "Эхлэх",
+    "SaveSend": "Хадгалаад, Илгээх",
+    "SaveAllSend": "Бүгдийг хадгалаад, Илгээх",
+    "Send": "Илгээх"
+  },
+  "organizations": {
+    "users": {
+      "title": "Хэрэглэгчид"
+    },
+    "organizations": {
+      "title": "Байгууллагууд"
+    },
+    "profile": {
+      "organization": { "title": "Байгууллагын мэдээлэл" },
+      "staff": { "title": "Миний мэдээлэл" },
+      "changepassword": { "title": "Өөрийн нууц үгийг солих" }
+    }
+  },
+  "files": {
+    "title": "Файлын сан",
+    "SelectedFile": "Сонгосон файл: ",
+    "FileNotFound": "Файл олдсонгүй.",
+    "Upload": "Хуулах",
+    "Download": "Татах",
+    "Delete": "Устгах"
+  },
+  "bases": {
+    "parameters": {
+      "title": "Параметрүүд"
+    },
+    "sectors": {
+      "title": "Бизнесийн салбар"
+    },
+    "operations": {
+      "title": "Үйл ажиллагааний чиглэлүүд"
+    },
+    "members": {
+      "title": "Гишүүнчлэлийн төрөл"
+    },
+    "statuses": {
+      "title": "Үнэлгээний төлвүүд"
+    },
+    "symbols": {
+      "title": "Үсгэн үнэлгээ"
+    },
+    "years": {
+      "title": "Жилүүд"
+    },
+    "contacts": {
+      "title": "Холбоо барих"
+    },
+    "guides": {
+      "title": "Гарын авлагууд"
+    }
+  },
+  "businesses": {
+    "assessments": {
+      "title": "Үнэлгээнүүд"
+    },
+    "modules": {
+      "title": "Модулиуд"
+    },
+    "questiontypes": {
+      "title": "Асуулгын төрөл"
+    },
+    "answertypes": {
+      "title": "Хариултын төрөл"
+    },
+    "faqs": {
+      "title": "Нийтлэг асуулт, хариултууд"
+    },
+    "questionsanswers": {
+      "title": "Асуулт, хариулт",
+      "score": "Оноо",
+      "optionEN": "Хариултын хувилбар (Англи)",
+      "optionMN": "Хариултын хувилбар (Монгол)",
+      "questionMN": "Хувилбар дахь асуулт (Монгол)",
+      "questionEN": "Хувилбар дахь асуулт (Англи)",
+      "answerType": "Хариултын төрөл",
+      "subQuestionEN": "Нэмэлт асуулт (Англи)",
+      "subQuestionMN": "Нэмэлт асуулт (Монгол)",
+      "numberOption": "Хувилбарын тоо",
+      "status": "Төлөв",
+      "option": "Хариултын хувилбарууд",
+      "SubQuestions": "Нэмэлт асуултууд",
+      "numberSubQuestion": "Нэмэлт асуултын тоо"
+    }
+  },
+  "assessment": {
+    "organization": "Оролцох",
+    "verifier": "Баталгаажуулах",
+    "summary": "Дүгнэлт үзэх",
+    "accept": "Зөвшөөрөх",
+    "Question": "Асуулт",
+    "Option": "Хариултууд",
+    "Description": "Нэмэлт тайлбар",
+    "Abstract": "Товч танилцуулга",
+    "Goal": "Зорилго",
+    "Content": "Агуулга",
+    "Attachment": "Хавсралт файл",
+    "decline": "Баталгаажуулалтаас татгалзах"
+  },
+  "verification": {
+    "organization": "Байгууллагын нэр",
+    "year": "Жил",
+    "assessment": "Үнэлгээний нэр",
+    "verifierScore": "Баталгаажуулагчийн оноо",
+    "organizationScore": "Байгууллагын оноо",
+    "answerOption": "Хариултын хувилбар",
+    "comment": "Баталгаажуулагчийн тэмдэглэл"
+  }
+}

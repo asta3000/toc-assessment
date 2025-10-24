@@ -1,0 +1,364 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Parameter {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  name        String    @unique
+  value       String
+  description String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime? @updatedAt
+}
+
+model Organization {
+  id           String         @id @default(auto()) @map("_id") @db.ObjectId
+  name         String         @unique
+  User         User[]
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime?      @updatedAt
+  status       String?        @default("1")
+  Member       Member?        @relation(fields: [memberId], references: [id])
+  memberId     String?        @db.ObjectId
+  Operation    Operation?     @relation(fields: [operationId], references: [id])
+  operationId  String?        @db.ObjectId
+  Sector       Sector?        @relation(fields: [sectorId], references: [id])
+  sectorId     String?        @db.ObjectId
+  Performance  Performance[]
+  Answer       Answer[]
+  OptionAnswer OptionAnswer[]
+}
+
+model User {
+  id                   String         @id @default(auto()) @map("_id") @db.ObjectId
+  firstname            String
+  lastname             String
+  email                String         @unique
+  position             String
+  gender               Gender
+  mobile               String
+  password             String
+  role                 Role           @default(ORGANIZATION)
+  attempt              Int            @default(0)
+  createdAt            DateTime       @default(now())
+  updatedAt            DateTime?      @updatedAt
+  status               String         @default("1")
+  Organization         Organization   @relation(fields: [organizationId], references: [id])
+  organizationId       String         @db.ObjectId
+  OptionAnswer         OptionAnswer[] @relation("userId")
+  Answer               Answer[]       @relation("userId")
+  AnswerVerifier       Answer[]       @relation("verifierId")
+  OptionAnswerVerifier OptionAnswer[] @relation("verifierId")
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+enum Role {
+  ADMIN
+  VERIFIER
+  ORGANIZATION
+}
+
+model Member {
+  id           String         @id @default(auto()) @map("_id") @db.ObjectId
+  name         String         @unique
+  description  String?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime?      @updatedAt
+  status       String         @default("1")
+  organization Organization[]
+}
+
+model Operation {
+  id           String         @id @default(auto()) @map("_id") @db.ObjectId
+  name         String         @unique
+  description  String?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime?      @updatedAt
+  status       String         @default("1")
+  organization Organization[]
+}
+
+model Sector {
+  id           String         @id @default(auto()) @map("_id") @db.ObjectId
+  name         String         @unique
+  description  String?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime?      @updatedAt
+  status       String         @default("1")
+  organization Organization[]
+}
+
+model Status {
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  name        String        @unique
+  description String?
+  status      String        @default("1")
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime?     @updatedAt
+  Performance Performance[]
+}
+
+model Symbol {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  min       Int       @unique
+  max       Int       @unique
+  name      String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+}
+
+model Year {
+  id           String         @id @default(auto()) @map("_id") @db.ObjectId
+  name         String         @unique
+  status       String         @default("1")
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime?      @updatedAt
+  Performance  Performance[]
+  Answer       Answer[]
+  OptionAnswer OptionAnswer[]
+}
+
+model Guide {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  name        String    @unique
+  value       String    @unique
+  guideType   GuideType
+  description String?
+  status      String    @default("1")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime? @updatedAt
+}
+
+enum GuideType {
+  VIDEO
+  PDF
+  LINK
+}
+
+model Contact {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  name      String    @unique
+  value     String    @unique
+  status    String    @default("1")
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+}
+
+model Assessment {
+  id           String         @id @default(auto()) @map("_id") @db.ObjectId
+  name         String         @unique
+  abstract     String
+  content      String
+  goal         String
+  status       String         @default("1")
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime?      @updatedAt
+  Module       Module[]
+  Question     Question[]
+  Option       Option[]
+  Performance  Performance[]
+  Answer       Answer[]
+  OptionAnswer OptionAnswer[]
+  QuestionType QuestionType[]
+}
+
+model Module {
+  id           String         @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  goal         String
+  description  String
+  status       String         @default("1")
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime?      @updatedAt
+  Assessment   Assessment?    @relation(fields: [assessmentId], references: [id])
+  assessmentId String         @db.ObjectId
+  Question     Question[]
+  Answer       Answer[]
+  OptionAnswer OptionAnswer[]
+  QuestionType QuestionType[]
+}
+
+model QuestionType {
+  id             String                 @id @default(auto()) @map("_id") @db.ObjectId
+  name           String                 @unique
+  classification QuestionClassification @default(GENERAL)
+  description    String?
+  status         String                 @default("1")
+  createdAt      DateTime               @default(now())
+  updatedAt      DateTime?              @updatedAt
+  Question       Question[]
+  Module         Module?                @relation(fields: [moduleId], references: [id])
+  moduleId       String?                @db.ObjectId
+  Assessment     Assessment?            @relation(fields: [assessmentId], references: [id])
+  assessmentId   String?                @db.ObjectId
+}
+
+enum QuestionClassification {
+  GENERAL
+  SECTOR
+}
+
+model AnswerType {
+  id             String               @id @default(auto()) @map("_id") @db.ObjectId
+  name           String               @unique
+  classification AnswerClassification @default(RADIO)
+  description    String?
+  status         String               @default("1")
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime?            @updatedAt
+  Question       Question[]
+  Answer         Answer[]
+  OptionAnswer   OptionAnswer[]
+}
+
+enum AnswerClassification {
+  RADIO
+  CHECKBOX
+  TEXT
+  COMBINE
+}
+
+model Faq {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  question  String
+  answer    String
+  status    String    @default("1")
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+}
+
+model Question {
+  id             String         @id @default(auto()) @map("_id") @db.ObjectId
+  name           String
+  name_en        String?
+  status         String         @default("1")
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime?      @updatedAt
+  QuestionType   QuestionType?  @relation(fields: [questionTypeId], references: [id])
+  questionTypeId String         @db.ObjectId
+  AnswerType     AnswerType?    @relation(fields: [answerTypeId], references: [id])
+  answerTypeId   String         @db.ObjectId
+  Assessment     Assessment?    @relation(fields: [assessmentId], references: [id])
+  assessmentId   String         @db.ObjectId
+  Module         Module?        @relation(fields: [moduleId], references: [id])
+  moduleId       String         @db.ObjectId
+  SubQuestion    SubQuestion[]
+  Option         Option[]
+  condition      Float?         @default(0)
+  Answer         Answer[]
+  OptionAnswer   OptionAnswer[]
+}
+
+model SubQuestion {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  name_en    String?
+  status     String    @default("1")
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime? @updatedAt
+  Question   Question? @relation(fields: [questionId], references: [id])
+  questionId String    @db.ObjectId
+  Answer     Answer[]
+}
+
+model Option {
+  id           String         @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  name_en      String?
+  score        Float          @default(0)
+  status       String         @default("1")
+  question     String?
+  question_en  String?
+  answerType   answerType?    @default(TEXT)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime?      @updatedAt
+  Question     Question?      @relation(fields: [questionId], references: [id])
+  questionId   String         @db.ObjectId
+  Assessment   Assessment?    @relation(fields: [assessmentId], references: [id])
+  assessmentId String         @db.ObjectId
+  OptionAnswer OptionAnswer[]
+}
+
+enum answerType {
+  TEXT
+  NUMBER
+}
+
+model Answer {
+  id             String        @id @default(auto()) @map("_id") @db.ObjectId
+  description    String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime?     @updatedAt
+  Question       Question?     @relation(fields: [questionId], references: [id])
+  questionId     String?       @db.ObjectId
+  Organization   Organization? @relation(fields: [organizationId], references: [id])
+  organizationId String?       @db.ObjectId
+  User           User?         @relation("userId", fields: [userId], references: [id])
+  userId         String?       @db.ObjectId
+  Year           Year?         @relation(fields: [yearId], references: [id])
+  yearId         String?       @db.ObjectId
+  Assessment     Assessment?   @relation(fields: [assessmentId], references: [id])
+  assessmentId   String?       @db.ObjectId
+  Module         Module?       @relation(fields: [moduleId], references: [id])
+  moduleId       String?       @db.ObjectId
+  AnswerType     AnswerType?   @relation(fields: [answerTypeId], references: [id])
+  answerTypeId   String?       @db.ObjectId
+  SubQuestion    SubQuestion?  @relation(fields: [subQuestionId], references: [id])
+  subQuestionId  String?       @db.ObjectId
+  comment        String?
+  verifierId     String?       @db.ObjectId
+  Verifier       User?         @relation("verifierId", fields: [verifierId], references: [id])
+  isVerified     Boolean       @default(false)
+}
+
+model OptionAnswer {
+  id             String        @id @default(auto()) @map("_id") @db.ObjectId
+  score_user     Float?
+  score_verify   Float?
+  verifierId     String?       @db.ObjectId
+  Verifier       User?         @relation("verifierId", fields: [verifierId], references: [id])
+  description    String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime?     @updatedAt
+  Organization   Organization? @relation(fields: [organizationId], references: [id])
+  organizationId String?       @db.ObjectId
+  User           User?         @relation("userId", fields: [userId], references: [id])
+  userId         String?       @db.ObjectId
+  Year           Year?         @relation(fields: [yearId], references: [id])
+  yearId         String?       @db.ObjectId
+  Assessment     Assessment?   @relation(fields: [assessmentId], references: [id])
+  assessmentId   String?       @db.ObjectId
+  Module         Module?       @relation(fields: [moduleId], references: [id])
+  moduleId       String?       @db.ObjectId
+  AnswerType     AnswerType?   @relation(fields: [answerTypeId], references: [id])
+  answerTypeId   String?       @db.ObjectId
+  Question       Question?     @relation(fields: [questionId], references: [id])
+  questionId     String?       @db.ObjectId
+  Option         Option?       @relation(fields: [optionId], references: [id])
+  optionId       String?       @db.ObjectId
+}
+
+model Performance {
+  id             String        @id @default(auto()) @map("_id") @db.ObjectId
+  cycle          Int           @default(0)
+  Assessment     Assessment?   @relation(fields: [assessmentId], references: [id])
+  assessmentId   String?       @db.ObjectId
+  Year           Year?         @relation(fields: [yearId], references: [id])
+  yearId         String        @db.ObjectId
+  Status         Status?       @relation(fields: [statusId], references: [id])
+  statusId       String        @db.ObjectId
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime?     @updatedAt
+  Organization   Organization? @relation(fields: [organizationId], references: [id])
+  organizationId String        @db.ObjectId
+}

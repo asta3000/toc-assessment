@@ -1,0 +1,122 @@
+[
+  {
+    "title": "organizations",
+    "menus": [
+      {
+        "name": "Байгууллагууд",
+        "name_en": "Organizations",
+        "link": "/organizations/organizations",
+        "status": true,
+        "role": ["ADMIN"]
+      },
+      {
+        "name": "Хэрэглэгчид",
+        "name_en": "Users",
+        "link": "/organizations/users",
+        "status": true,
+        "role": ["ADMIN"]
+      }
+    ]
+  },
+  {
+    "title": "bases",
+    "menus": [
+      {
+        "name": "Параметрүүд",
+        "name_en": "Parameters",
+        "link": "/bases/parameters",
+        "status": true,
+        "role": ["ADMIN"]
+      },
+      {
+        "name": "Жил",
+        "name_en": "Year",
+        "link": "/bases/years",
+        "status": true,
+        "role": ["ADMIN"]
+      },
+      {
+        "name": "Гишүүнчлэлийн төрөл",
+        "name_en": "Member Type",
+        "link": "/bases/members",
+        "status": true,
+        "role": ["ADMIN"]
+      },
+      {
+        "name": "Бизнесийн салбар",
+        "name_en": "Sector types",
+        "link": "/bases/sectors",
+        "status": true,
+        "role": ["ADMIN"]
+      },
+      {
+        "name": "Үйл ажиллагааны чиглэлүүд",
+        "name_en": "Operation types",
+        "link": "/bases/operations",
+        "status": true,
+        "role": ["ADMIN"]
+      },
+      {
+        "name": "Үнэлгээний төлвүүд",
+        "name_en": "Status of assessment",
+        "link": "/bases/status",
+        "status": true,
+        "role": ["ADMIN"]
+      },
+      {
+        "name": "Үсгэн үнэлгээ",
+        "name_en": "Symbols",
+        "link": "/bases/symbols",
+        "status": true,
+        "role": ["ADMIN"]
+      },
+      {
+        "name": "Гарын авлага",
+        "name_en": "Guides",
+        "link": "/bases/guides",
+        "status": true,
+        "role": ["ADMIN"]
+      },
+      {
+        "name": "Холбоо барих",
+        "name_en": "Contacts",
+        "link": "/bases/contacts",
+        "status": true,
+        "role": ["ADMIN"]
+      }
+    ]
+  },
+  {
+    "title": "businesses",
+    "menus": [
+      {
+        "name": "Үнэлгээнүүд",
+        "name_en": "Assessments",
+        "link": "/businesses/assessments",
+        "status": true,
+        "role": ["ADMIN"]
+      },
+      {
+        "name": "Модулиуд",
+        "name_en": "Modules",
+        "link": "/businesses/modules",
+        "status": true,
+        "role": ["ADMIN"]
+      },
+      {
+        "name": "Асуулгын төрөл",
+        "name_en": "Types of question",
+        "link": "/businesses/questiontypes",
+        "status": true,
+        "role": ["ADMIN"]
+      },
+      {
+        "name": "Хариултын төрөл",
+        "name_en": "Types of answer",
+        "link": "/businesses/answertypes",
+        "status": true,
+        "role": ["ADMIN"]
+      }
+    ]
+  }
+]

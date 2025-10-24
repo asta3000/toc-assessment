@@ -1,0 +1,766 @@
+[
+  {
+    "title": "parameters",
+    "metadatas": [
+      {
+        "name": "Нэр",
+        "name_en": "Name",
+        "align": "center",
+        "field": "name",
+        "type": "text",
+        "width": "20%"
+      },
+      {
+        "name": "Утга",
+        "name_en": "Value",
+        "align": "center",
+        "field": "value",
+        "type": "text",
+        "width": "5%"
+      },
+      {
+        "name": "Тайлбар",
+        "name_en": "Description",
+        "align": "center",
+        "field": "description",
+        "type": "text"
+      }
+    ]
+  },
+  {
+    "title": "sectors",
+    "metadatas": [
+      {
+        "name": "Нэр",
+        "name_en": "Name",
+        "align": "center",
+        "field": "name",
+        "type": "text",
+        "width": "20%"
+      },
+      {
+        "name": "Тайлбар",
+        "name_en": "Description",
+        "align": "center",
+        "field": "description",
+        "type": "text"
+      },
+      {
+        "name": "Төлөв",
+        "name_en": "Status",
+        "align": "center",
+        "field": "status",
+        "type": "select",
+        "selection": [
+          { "value": "1", "description": "Идэвхтэй" },
+          { "value": "0", "description": "Идэвхгүй" }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "operations",
+    "metadatas": [
+      {
+        "name": "Нэр",
+        "name_en": "Name",
+        "align": "center",
+        "field": "name",
+        "type": "text",
+        "width": "20%"
+      },
+      {
+        "name": "Тайлбар",
+        "name_en": "Description",
+        "align": "center",
+        "field": "description",
+        "type": "text"
+      },
+      {
+        "name": "Төлөв",
+        "name_en": "Status",
+        "align": "center",
+        "field": "status",
+        "type": "select",
+        "selection": [
+          { "value": "1", "description": "Идэвхтэй" },
+          { "value": "0", "description": "Идэвхгүй" }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "members",
+    "metadatas": [
+      {
+        "name": "Нэр",
+        "name_en": "Name",
+        "align": "center",
+        "field": "name",
+        "type": "text",
+        "width": "20%"
+      },
+      {
+        "name": "Тайлбар",
+        "name_en": "Description",
+        "align": "center",
+        "field": "description",
+        "type": "text"
+      },
+      {
+        "name": "Төлөв",
+        "name_en": "Status",
+        "align": "center",
+        "field": "status",
+        "type": "select",
+        "selection": [
+          { "value": "1", "description": "Идэвхтэй" },
+          { "value": "0", "description": "Идэвхгүй" }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "organizations",
+    "metadatas": [
+      {
+        "name": "Нэр",
+        "name_en": "Name",
+        "align": "center",
+        "field": "name",
+        "type": "text",
+        "width": "20%"
+      },
+      {
+        "name": "Гишүүнчлэл",
+        "name_en": "Member",
+        "align": "center",
+        "field": "memberId",
+        "type": "select"
+      },
+      {
+        "name": "Бизнесийн үйл ажиллагаа",
+        "name_en": "Operation",
+        "align": "center",
+        "field": "operationId",
+        "type": "select"
+      },
+      {
+        "name": "Бизнесийн салбар",
+        "name_en": "Sector",
+        "align": "center",
+        "field": "sectorId",
+        "type": "select"
+      },
+      {
+        "name": "Төлөв",
+        "name_en": "Status",
+        "align": "center",
+        "field": "status",
+        "type": "select",
+        "selection": [
+          { "value": "1", "description": "Идэвхтэй" },
+          { "value": "0", "description": "Идэвхгүй" }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "users",
+    "metadatas": [
+      {
+        "name": "Өөрийн нэр",
+        "name_en": "Firstname",
+        "align": "center",
+        "field": "firstname",
+        "type": "text",
+        "width": "10%"
+      },
+      {
+        "name": "Эцэг, эхийн нэр",
+        "name_en": "Lastname",
+        "align": "center",
+        "field": "lastname",
+        "type": "text",
+        "width": "10%"
+      },
+      {
+        "name": "Имэйл хаяг",
+        "name_en": "Email",
+        "align": "center",
+        "field": "email",
+        "type": "email",
+        "width": "10%"
+      },
+      {
+        "name": "Нууц үг",
+        "name_en": "Password",
+        "align": "center",
+        "field": "password",
+        "type": "password",
+        "width": "10%"
+      },
+      {
+        "name": "Батлах нууц үг",
+        "name_en": "Confirm password",
+        "align": "center",
+        "field": "confirmPassword",
+        "type": "password",
+        "width": "10%"
+      },
+      {
+        "name": "Гар утасны дугаар",
+        "name_en": "Mobile",
+        "align": "center",
+        "field": "mobile",
+        "type": "text",
+        "width": "7%"
+      },
+      {
+        "name": "Албан байгууллага",
+        "name_en": "Organization",
+        "align": "center",
+        "field": "organizationId",
+        "type": "select",
+        "width": "15%"
+      },
+      {
+        "name": "Албан тушаал",
+        "name_en": "Position",
+        "align": "center",
+        "field": "position",
+        "type": "text",
+        "width": "15%"
+      },
+      {
+        "name": "Хүйс",
+        "name_en": "Gender",
+        "align": "center",
+        "field": "gender",
+        "type": "select",
+        "width": "7%",
+        "selection": [
+          { "value": "MALE", "description": "Эрэгтэй" },
+          { "value": "FEMALE", "description": "Эмэгтэй" }
+        ]
+      },
+      {
+        "name": "Үүрэг",
+        "name_en": "Role",
+        "align": "center",
+        "field": "role",
+        "type": "select",
+        "width": "7%",
+        "selection": [
+          { "value": "ADMIN", "description": "Админ" },
+          { "value": "VERIFIER", "description": "Баталгаажуулагч" },
+          { "value": "ORGANIZATION", "description": "Байгууллага" }
+        ]
+      },
+      {
+        "name": "Төлөв",
+        "name_en": "Status",
+        "align": "center",
+        "field": "status",
+        "type": "select",
+        "width": "7%",
+        "selection": [
+          { "value": "1", "description": "Идэвхтэй" },
+          { "value": "0", "description": "Идэвхгүй" }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "statuses",
+    "metadatas": [
+      {
+        "name": "Нэр",
+        "name_en": "Name",
+        "align": "center",
+        "field": "name",
+        "type": "text",
+        "width": "20%"
+      },
+      {
+        "name": "Тайлбар",
+        "name_en": "Description",
+        "align": "center",
+        "field": "description",
+        "type": "text"
+      },
+      {
+        "name": "Төлөв",
+        "name_en": "Status",
+        "align": "center",
+        "field": "status",
+        "type": "select",
+        "selection": [
+          { "value": "1", "description": "Идэвхтэй" },
+          { "value": "0", "description": "Идэвхгүй" }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "symbols",
+    "metadatas": [
+      {
+        "name": "Үсгэн тэмдэглэгээ",
+        "name_en": "Symbol",
+        "align": "center",
+        "field": "name",
+        "type": "text",
+        "width": "30%"
+      },
+      {
+        "name": "Доод оноо",
+        "name_en": "Minimum score",
+        "align": "center",
+        "field": "min",
+        "type": "number",
+        "width": "30%"
+      },
+      {
+        "name": "Дээд оноо",
+        "name_en": "Maximum score",
+        "align": "center",
+        "field": "max",
+        "type": "number",
+        "width": "30%"
+      }
+    ]
+  },
+  {
+    "title": "years",
+    "metadatas": [
+      {
+        "name": "Жил",
+        "name_en": "Year",
+        "align": "center",
+        "field": "name",
+        "type": "text",
+        "width": "20%"
+      },
+      {
+        "name": "Төлөв",
+        "name_en": "Status",
+        "align": "center",
+        "field": "status",
+        "type": "select",
+        "selection": [
+          { "value": "1", "description": "Идэвхтэй" },
+          { "value": "0", "description": "Идэвхгүй" }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "contacts",
+    "metadatas": [
+      {
+        "name": "Нэр",
+        "name_en": "Name",
+        "align": "center",
+        "field": "name",
+        "type": "text",
+        "width": "20%"
+      },
+      {
+        "name": "Утга",
+        "name_en": "Value",
+        "align": "center",
+        "field": "value",
+        "type": "text"
+      },
+      {
+        "name": "Төлөв",
+        "name_en": "Status",
+        "align": "center",
+        "field": "status",
+        "type": "select",
+        "selection": [
+          { "value": "1", "description": "Идэвхтэй" },
+          { "value": "0", "description": "Идэвхгүй" }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "guides",
+    "metadatas": [
+      {
+        "name": "Нэр",
+        "name_en": "Name",
+        "align": "center",
+        "field": "name",
+        "type": "text",
+        "width": "20%"
+      },
+      {
+        "name": "Төрөл",
+        "name_en": "Type",
+        "align": "center",
+        "field": "guideType",
+        "type": "select",
+        "selection": [
+          { "value": "VIDEO", "description": "Видео" },
+          { "value": "PDF", "description": "PDF" },
+          { "value": "LINK", "description": "Линк" }
+        ]
+      },
+      {
+        "name": "Утга",
+        "name_en": "Value",
+        "align": "center",
+        "field": "value",
+        "type": "text"
+      },
+      {
+        "name": "Тайлбар",
+        "name_en": "Description",
+        "align": "center",
+        "field": "description",
+        "type": "text"
+      },
+      {
+        "name": "Төлөв",
+        "name_en": "Status",
+        "align": "center",
+        "field": "status",
+        "type": "select",
+        "selection": [
+          { "value": "1", "description": "Идэвхтэй" },
+          { "value": "0", "description": "Идэвхгүй" }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "assessments",
+    "metadatas": [
+      {
+        "name": "Нэр",
+        "name_en": "Name",
+        "align": "center",
+        "field": "name",
+        "type": "text",
+        "width": "20%"
+      },
+      {
+        "name": "Товч тайлбар",
+        "name_en": "Abstract",
+        "align": "center",
+        "field": "abstract",
+        "type": "text",
+        "width": "20%"
+      },
+      {
+        "name": "Агуулга",
+        "name_en": "Content",
+        "align": "center",
+        "field": "content",
+        "type": "text",
+        "width": "20%"
+      },
+      {
+        "name": "Зорилго",
+        "name_en": "Goal",
+        "align": "center",
+        "field": "goal",
+        "type": "text",
+        "width": "20%"
+      },
+      {
+        "name": "Төлөв",
+        "name_en": "Status",
+        "align": "center",
+        "field": "status",
+        "type": "select",
+        "width": "12%",
+        "selection": [
+          { "value": "1", "description": "Идэвхтэй" },
+          { "value": "0", "description": "Идэвхгүй" }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "verifications",
+    "metadatas": [
+      {
+        "name": "Байгууллага",
+        "name_en": "Organization",
+        "align": "center",
+        "field": "organization",
+        "type": "text",
+        "width": "30%"
+      },
+      {
+        "name": "Үнэлгээ",
+        "name_en": "Assessment",
+        "align": "center",
+        "field": "assessment",
+        "type": "text",
+        "width": "30%"
+      },
+      {
+        "name": "Төлөв",
+        "name_en": "Status",
+        "align": "center",
+        "field": "status",
+        "type": "select",
+        "width": "20%",
+        "selection": [
+          { "value": "1", "description": "Идэвхтэй" },
+          { "value": "0", "description": "Идэвхгүй" }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "modules",
+    "metadatas": [
+      {
+        "name": "Үнэлгээ",
+        "name_en": "Assessment",
+        "align": "center",
+        "field": "assessmentId",
+        "type": "select"
+      },
+      {
+        "name": "Нэр",
+        "name_en": "Name",
+        "align": "center",
+        "field": "name",
+        "type": "text",
+        "width": "20%"
+      },
+      {
+        "name": "Зорилго",
+        "name_en": "Goal",
+        "align": "center",
+        "field": "goal",
+        "type": "text",
+        "width": "20%"
+      },
+      {
+        "name": "Тайлбар",
+        "name_en": "Description",
+        "align": "center",
+        "field": "description",
+        "type": "text",
+        "width": "20%"
+      },
+      {
+        "name": "Төлөв",
+        "name_en": "Status",
+        "align": "center",
+        "field": "status",
+        "type": "select",
+        "selection": [
+          { "value": "1", "description": "Идэвхтэй" },
+          { "value": "0", "description": "Идэвхгүй" }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "questiontypes",
+    "metadatas": [
+      {
+        "name": "Нэр",
+        "name_en": "Name",
+        "align": "center",
+        "field": "name",
+        "type": "text",
+        "width": "20%"
+      },
+      {
+        "name": "Ангилал",
+        "name_en": "Classification",
+        "align": "center",
+        "field": "classification",
+        "type": "select",
+        "width": "20%",
+        "selection": [
+          { "value": "GENERAL", "description": "Ерөнхий асуулга" },
+          { "value": "SECTOR", "description": "Салбарын асуулга" }
+        ]
+      },
+      {
+        "name": "Үнэлгээ",
+        "name_en": "Assessment",
+        "align": "center",
+        "field": "assessmentId",
+        "width": "20%",
+        "type": "select"
+      },
+      {
+        "name": "Модуль",
+        "name_en": "Module",
+        "align": "center",
+        "field": "moduleId",
+        "type": "select",
+        "width": "20%"
+      },
+      {
+        "name": "Тайлбар",
+        "name_en": "Description",
+        "align": "center",
+        "field": "description",
+        "type": "text",
+        "width": "40%"
+      },
+      {
+        "name": "Төлөв",
+        "name_en": "Status",
+        "align": "center",
+        "field": "status",
+        "type": "select",
+        "selection": [
+          { "value": "1", "description": "Идэвхтэй" },
+          { "value": "0", "description": "Идэвхгүй" }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "answertypes",
+    "metadatas": [
+      {
+        "name": "Нэр",
+        "name_en": "Name",
+        "align": "center",
+        "field": "name",
+        "type": "text",
+        "width": "20%"
+      },
+      {
+        "name": "Ангилал",
+        "name_en": "Classification",
+        "align": "center",
+        "field": "classification",
+        "type": "select",
+        "width": "20%",
+        "selection": [
+          { "value": "RADIO", "description": "Нэг сонголттой" },
+          { "value": "CHECKBOX", "description": "Олон сонголттой" },
+          { "value": "TEXT", "description": "Текст, тайлбар" },
+          { "value": "COMBINE", "description": "Нэг сонголт, текст тайлбар" }
+        ]
+      },
+      {
+        "name": "Тайлбар",
+        "name_en": "Description",
+        "align": "center",
+        "field": "description",
+        "type": "text",
+        "width": "40%"
+      },
+      {
+        "name": "Төлөв",
+        "name_en": "Status",
+        "align": "center",
+        "field": "status",
+        "type": "select",
+        "selection": [
+          { "value": "1", "description": "Идэвхтэй" },
+          { "value": "0", "description": "Идэвхгүй" }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "faqs",
+    "metadatas": [
+      {
+        "name": "Асуулт",
+        "name_en": "Question",
+        "align": "center",
+        "field": "question",
+        "type": "text",
+        "width": "20%"
+      },
+      {
+        "name": "Хариулт",
+        "name_en": "Answer",
+        "align": "center",
+        "field": "answer",
+        "type": "text",
+        "width": "40%"
+      },
+      {
+        "name": "Төлөв",
+        "name_en": "Status",
+        "align": "center",
+        "field": "status",
+        "type": "select",
+        "selection": [
+          { "value": "1", "description": "Идэвхтэй" },
+          { "value": "0", "description": "Идэвхгүй" }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "questions",
+    "metadatas": [
+      {
+        "name": "Асуулт (монгол хэл дээр)",
+        "name_en": "Question in Mongolian",
+        "align": "center",
+        "field": "name",
+        "type": "text",
+        "width": "20%"
+      },
+      {
+        "name": "Асуулт (англи хэл дээр)",
+        "name_en": "Question in English",
+        "align": "center",
+        "field": "name_en",
+        "type": "text",
+        "width": "20%"
+      },
+      {
+        "name": "Хариултын төрөл",
+        "name_en": "Types of answer",
+        "align": "center",
+        "field": "answerTypeId",
+        "type": "select"
+      },
+      {
+        "name": "Үнэлгээ",
+        "name_en": "Assessment",
+        "align": "center",
+        "field": "assessmentId",
+        "type": "select"
+      },
+      {
+        "name": "Үнэлгээний модуль",
+        "name_en": "Module",
+        "align": "center",
+        "field": "moduleId",
+        "type": "select"
+      },
+      {
+        "name": "Асуултын төрөл",
+        "name_en": "Types of question",
+        "align": "center",
+        "field": "questionTypeId",
+        "type": "select"
+      },
+      {
+        "name": "Төлөв",
+        "name_en": "Status",
+        "align": "center",
+        "field": "status",
+        "type": "select",
+        "selection": [
+          { "value": "1", "description": "Идэвхтэй" },
+          { "value": "0", "description": "Идэвхгүй" }
+        ]
+      }
+    ]
+  }
+]
