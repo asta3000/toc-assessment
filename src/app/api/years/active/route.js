@@ -10,6 +10,7 @@ export const GET = async () => {
   try {
     const year = await prisma.year.findFirst({
       where: { status: "1" },
+      orderBy: [{ name: "desc" }],
     });
 
     return NextResponse.json(year, { status: 200, headers: cors });

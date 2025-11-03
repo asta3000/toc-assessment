@@ -25,7 +25,6 @@ export const FullSolidButton = (props) => {
 };
 
 export const SolidButton = (props) => {
-  console.log("SOLID_BUTTON: ", props);
   return (
     <button
       className={clsx(

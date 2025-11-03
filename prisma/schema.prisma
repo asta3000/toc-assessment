@@ -190,7 +190,7 @@ model Module {
 
 model QuestionType {
   id             String                 @id @default(auto()) @map("_id") @db.ObjectId
-  name           String                 @unique
+  name           String
   classification QuestionClassification @default(GENERAL)
   description    String?
   status         String                 @default("1")

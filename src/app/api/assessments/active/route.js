@@ -10,6 +10,7 @@ export const GET = async () => {
   try {
     const assessments = await prisma.assessment.findMany({
       where: { status: "1" },
+      orderBy: [{ name: "asc" }],
     });
 
     return NextResponse.json(assessments, { status: 200, headers: cors });

@@ -10,6 +10,7 @@ export const GET = async () => {
   try {
     const modules = await prisma.module.findMany({
       where: { status: "1" },
+      orderBy: [{ Assessment: { name: "asc" } }, { name: "asc" }],
       include: {
         Assessment: {
           select: {

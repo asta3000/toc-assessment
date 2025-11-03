@@ -10,7 +10,7 @@ import { geterror, posterror, STATUS_NEW } from "@/libs/constants";
 export const GET = async () => {
   try {
     const organizations = await prisma.organization.findMany({
-      orderBy: [{ name: "asc" }],
+      orderBy: [{ Member: { name: "asc" } }, { name: "asc" }],
       include: {
         Member: { select: { id: true, name: true } },
         Operation: { select: { id: true, name: true } },
@@ -66,6 +66,8 @@ export const POST = async (req) => {
             }
           }
         }
+
+        console.log(rows);
 
         await tx.performance.createMany({
           data: rows,

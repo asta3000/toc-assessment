@@ -569,6 +569,22 @@
     "title": "questiontypes",
     "metadatas": [
       {
+        "name": "Үнэлгээ",
+        "name_en": "Assessment",
+        "align": "center",
+        "field": "assessmentId",
+        "width": "20%",
+        "type": "select"
+      },
+      {
+        "name": "Модуль",
+        "name_en": "Module",
+        "align": "center",
+        "field": "moduleId",
+        "type": "select",
+        "width": "20%"
+      },
+      {
         "name": "Нэр",
         "name_en": "Name",
         "align": "center",
@@ -588,22 +604,7 @@
           { "value": "SECTOR", "description": "Салбарын асуулга" }
         ]
       },
-      {
-        "name": "Үнэлгээ",
-        "name_en": "Assessment",
-        "align": "center",
-        "field": "assessmentId",
-        "width": "20%",
-        "type": "select"
-      },
-      {
-        "name": "Модуль",
-        "name_en": "Module",
-        "align": "center",
-        "field": "moduleId",
-        "type": "select",
-        "width": "20%"
-      },
+
       {
         "name": "Тайлбар",
         "name_en": "Description",
@@ -707,6 +708,27 @@
     "title": "questions",
     "metadatas": [
       {
+        "name": "Үнэлгээ",
+        "name_en": "Assessment",
+        "align": "center",
+        "field": "assessmentId",
+        "type": "select"
+      },
+      {
+        "name": "Үнэлгээний модуль",
+        "name_en": "Module",
+        "align": "center",
+        "field": "moduleId",
+        "type": "select"
+      },
+      {
+        "name": "Асуултын төрөл",
+        "name_en": "Types of question",
+        "align": "center",
+        "field": "questionTypeId",
+        "type": "select"
+      },
+      {
         "name": "Асуулт (монгол хэл дээр)",
         "name_en": "Question in Mongolian",
         "align": "center",
@@ -729,27 +751,7 @@
         "field": "answerTypeId",
         "type": "select"
       },
-      {
-        "name": "Үнэлгээ",
-        "name_en": "Assessment",
-        "align": "center",
-        "field": "assessmentId",
-        "type": "select"
-      },
-      {
-        "name": "Үнэлгээний модуль",
-        "name_en": "Module",
-        "align": "center",
-        "field": "moduleId",
-        "type": "select"
-      },
-      {
-        "name": "Асуултын төрөл",
-        "name_en": "Types of question",
-        "align": "center",
-        "field": "questionTypeId",
-        "type": "select"
-      },
+
       {
         "name": "Төлөв",
         "name_en": "Status",

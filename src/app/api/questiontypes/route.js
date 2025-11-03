@@ -9,7 +9,11 @@ import { geterror, posterror } from "@/libs/constants";
 export const GET = async () => {
   try {
     const types = await prisma.questionType.findMany({
-      orderBy: [{ assessmentId: "asc" }, { moduleId: "asc" }, { name: "asc" }],
+      orderBy: [
+        { Assessment: { name: "asc" } },
+        { Module: { name: "asc" } },
+        { name: "asc" },
+      ],
       include: {
         Assessment: true,
         Module: true,

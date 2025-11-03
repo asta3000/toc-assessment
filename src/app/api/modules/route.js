@@ -9,7 +9,7 @@ import { geterror, posterror } from "@/libs/constants";
 export const GET = async () => {
   try {
     const modules = await prisma.module.findMany({
-      orderBy: [{ name: "asc" }],
+      orderBy: [{ Assessment: { name: "asc" } }, { name: "asc" }],
       include: {
         Assessment: {
           select: {

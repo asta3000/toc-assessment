@@ -10,7 +10,12 @@ export const GET = async () => {
   try {
     const questions = await prisma.question.findMany({
       where: { status: "1" },
-      orderBy: { name: "asc" },
+      orderBy: [
+        { Assessment: { name: "asc" } },
+        { Module: { name: "asc" } },
+        { QuestionType: { name: "asc" } },
+        { name: "asc" },
+      ],
       include: {
         Assessment: { select: { id: true, name: true } },
         Module: { select: { id: true, name: true, goal: true } },

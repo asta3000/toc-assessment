@@ -64,9 +64,9 @@ export const QuestionsOptions = (props) => {
         return (
           <div
             key={index}
-            className="flex justify-center items-center gap-5 mb-5"
+            className="grid grid-cols-2 gap-5 border-[1px] border-gray-300 p-6 rounded-lg mb-5"
           >
-            <div className={clsx("flex-3/12", textblue)}>
+            <div className={clsx(textblue)}>
               <CustomInput
                 name="name"
                 type="text"
@@ -77,7 +77,7 @@ export const QuestionsOptions = (props) => {
                 action="option"
               />
             </div>
-            <div className={clsx("flex-3/12", textblue)}>
+            <div className={clsx(textblue)}>
               <CustomInput
                 name="name_en"
                 type="text"
@@ -90,7 +90,7 @@ export const QuestionsOptions = (props) => {
             </div>
             {props.data?.answerTypeId === CHECKBOX && (
               <Fragment>
-                <div className={clsx("flex-3/12", textblue)}>
+                <div className={clsx(textblue)}>
                   <CustomInput
                     name="question"
                     type="text"
@@ -101,7 +101,7 @@ export const QuestionsOptions = (props) => {
                     action="option"
                   />
                 </div>
-                <div className={clsx("flex-3/12", textblue)}>
+                <div className={clsx(textblue)}>
                   <CustomInput
                     name="question_en"
                     type="text"
@@ -112,7 +112,7 @@ export const QuestionsOptions = (props) => {
                     action="option"
                   />
                 </div>
-                <div className="flex-2/12">
+                <div>
                   <CustomSelect
                     name="answerType"
                     label={t("businesses.questionsanswers.answerType")}
@@ -130,46 +130,48 @@ export const QuestionsOptions = (props) => {
                 </div>
               </Fragment>
             )}
-            <div className="flex-1/12">
-              <CustomInput
-                name="score"
-                type="number"
-                label={t("businesses.questionsanswers.score")}
-                value={option.score}
-                handleChangeValue={props.handleChangeValue}
-                index={index}
-                action="option"
-              />
-            </div>
-            <div className="flex-1/12">
-              <CustomSelect
-                name="status"
-                label={t("businesses.questionsanswers.status")}
-                value={option.status}
-                index={index}
-                selection={[
-                  { value: "1", description: "Идэвхтэй" },
-                  { value: "0", description: "Идэвхгүй" },
-                ]}
-                handleChangeValue={props.handleChangeValue}
-                setOptions={props.setOptions}
-                options={props.options}
-                action="option"
-              />
-            </div>
-            {props.options.length > 1 && (
-              <div>
-                <FaRegTrashAlt
-                  size={16}
-                  className="text-gray-500 hover:text-red-500 hover:scale-110 cursor-pointer"
-                  onClick={() => {
-                    props.setOptions([
-                      ...props.options.filter((_, o) => o !== index),
-                    ]);
-                  }}
+            <div className="flex justify-between items-center gap-10">
+              <div className="flex-1/3">
+                <CustomInput
+                  name="score"
+                  type="number"
+                  label={t("businesses.questionsanswers.score")}
+                  value={option.score}
+                  handleChangeValue={props.handleChangeValue}
+                  index={index}
+                  action="option"
                 />
               </div>
-            )}
+              <div className="flex-1/3">
+                <CustomSelect
+                  name="status"
+                  label={t("businesses.questionsanswers.status")}
+                  value={option.status}
+                  index={index}
+                  selection={[
+                    { value: "1", description: "Идэвхтэй" },
+                    { value: "0", description: "Идэвхгүй" },
+                  ]}
+                  handleChangeValue={props.handleChangeValue}
+                  setOptions={props.setOptions}
+                  options={props.options}
+                  action="option"
+                />
+              </div>
+              {props.options.length > 1 && (
+                <div>
+                  <FaRegTrashAlt
+                    size={16}
+                    className="text-gray-500 hover:text-red-500 hover:scale-120 transition-all ease-in-out duration-300 cursor-pointer"
+                    onClick={() => {
+                      props.setOptions([
+                        ...props.options.filter((_, o) => o !== index),
+                      ]);
+                    }}
+                  />
+                </div>
+              )}
+            </div>
           </div>
         );
       })}

@@ -172,7 +172,7 @@ export const UserBar = () => {
 
   useEffect(() => {
     if (!lodash.isEmpty(data)) {
-      storeYear({ year: data[0].name, yearId: data[0].id });
+      storeYear({ year: data[0]?.name, yearId: data[0]?.id });
     }
   }, [data]);
 

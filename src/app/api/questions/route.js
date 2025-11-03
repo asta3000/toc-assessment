@@ -9,12 +9,17 @@ import { geterror, posterror, TEXT } from "@/libs/constants";
 export const GET = async () => {
   try {
     const questions = await prisma.question.findMany({
-      orderBy: [{ Assessment: { name: "asc" } }, { Module: { name: "asc" } }],
+      orderBy: [
+        { Assessment: { name: "asc" } },
+        { Module: { name: "asc" } },
+        { QuestionType: { name: "asc" } },
+        { name: "asc" },
+      ],
       include: {
         Assessment: { select: { id: true, name: true } },
         Module: { select: { id: true, name: true, goal: true } },
-        AnswerType: { select: { id: true, name: true, classification: true } },
         QuestionType: { select: { id: true, name: true } },
+        AnswerType: { select: { id: true, name: true, classification: true } },
       },
     });
 
@@ -83,8 +88,6 @@ export const POST = async (req) => {
         } else {
           throw new Error("Хариултын сонголт оруулна уу.");
         }
-      } else {
-        throw new Error("Нэмэлт асуултыг бүртгэж дуусаагүй байна.");
       }
     });
 

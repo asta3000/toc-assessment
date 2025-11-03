@@ -329,9 +329,9 @@ const Organization = () => {
 
   // console.log("Answer: ", props.answer);
   // console.log("Answer Option: ", props.optionAnswer);
-  console.log("Saved: ", savedAnswers);
-  console.log("All: ", allDatas);
-  console.log("Ass: ", assessment);
+  // console.log("Saved: ", savedAnswers);
+  // console.log("All: ", allDatas);
+  // console.log("Ass: ", assessment);
 
   return (
     <div>

@@ -10,7 +10,7 @@ export const GET = async () => {
   try {
     const organizations = await prisma.organization.findMany({
       where: { status: "1" },
-      orderBy: [{ name: "asc" }],
+      orderBy: [{ Member: { name: "asc" } }, { name: "asc" }],
     });
 
     return NextResponse.json(organizations, { status: 200, headers: cors });
