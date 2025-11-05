@@ -267,6 +267,26 @@ export const QuestionnaireOptions = (props) => {
   const t = useTranslation();
   // Үнэлгээний төлвийг хараад шинэ, эсвэл бөглөж буйгаас бусад төлөвт байвал унших горимд шилжинэ.
   const disabled = ![STATUS_NEW, STATUS_FILLING].includes(assessment?.statusId);
+  const questionId = props.data?.id;
+
+  // Checkbox-ийн хувьд тухайн асуултын хариулт нь state-д байвал state дэх options-ийн id утгуудаар Set үүсгэж байна.
+  const stateSet = useMemo(() => {
+    return new Set(
+      (props.optionAnswer?.questionId === questionId
+        ? (props.optionAnswer?.options ?? [])
+        : []
+      ).map((o) => o.optionId)
+    );
+  }, [props.optionAnswer?.questionId, props.optionAnswer?.options, questionId]);
+
+  // Checkbox-ийн хувьд тухайн асуултын хариулт нь өгөгдлийн санд байвал түүний options-ийн optionId утгуудаар Set үүсгэж байна.
+  const savedSet = useMemo(() => {
+    return new Set(
+      (props.savedAnswers?.optionAnswers ?? [])
+        .filter((a) => a.questionId === questionId)
+        .map((a) => a.optionId)
+    );
+  }, [props.savedAnswers?.optionAnswers, questionId]);
 
   const radio = (
     options,
@@ -385,29 +405,6 @@ export const QuestionnaireOptions = (props) => {
     handleChangeOptionAnswer,
     questionId
   ) => {
-    // Тухайн асуултын хариулт нь state-д байвал state дэх options-ийн id утгуудаар Set үүсгэж байна.
-    const stateSet = useMemo(() => {
-      return new Set(
-        (props.optionAnswer?.questionId === questionId
-          ? (props.optionAnswer?.options ?? [])
-          : []
-        ).map((o) => o.optionId)
-      );
-    }, [
-      props.optionAnswer?.questionId,
-      props.optionAnswer?.options,
-      questionId,
-    ]);
-
-    // Тухайн асуултын хариулт нь өгөгдлийн санд байвал түүний options-ийн optionId утгуудаар Set үүсгэж байна.
-    const savedSet = useMemo(() => {
-      return new Set(
-        (props.savedAnswers?.optionAnswers ?? [])
-          .filter((a) => a.questionId === questionId)
-          .map((a) => a.optionId)
-      );
-    }, [props.savedAnswers?.optionAnswers, questionId]);
-
     // Хэрэглэгч тухайн хариултын state-тай харьцсан эсэхийг шалгах
     const touched = props.optionAnswer?.questionId === questionId;
     // console.log("CHECKBOX: ", stateSet, savedSet, touched);

@@ -376,7 +376,7 @@ const Questions = (props) => {
     });
   };
 
-  // console.log("Questions props: ", props);
+  console.log("Questions props: ", props);
 
   return (
     <form
