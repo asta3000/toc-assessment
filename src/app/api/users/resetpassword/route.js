@@ -6,10 +6,24 @@ import bcrypt from "bcrypt";
 import { prisma } from "@/libs/client";
 import cors from "@/libs/cors";
 import { geterror, puterror } from "@/libs/constants";
+import { recoveryPasswordSchema } from "@/libs/schemas";
 
 export const POST = async (req) => {
   try {
-    const { email, password } = await req.json();
+    const { email, password, confirmPassword } = await req.json();
+    const parsed = recoveryPasswordSchema?.safeParse({
+      email,
+      password,
+      confirmPassword,
+    });
+
+    if (!parsed?.success) {
+      const firstError = parsed?.error?.issues[0];
+      return NextResponse.json(
+        { message: firstError?.message },
+        { status: 302, headers: cors }
+      );
+    }
 
     // Хэрэглэгч бүртгэлтэй эсэхийг шалгах
     const existingUser = await prisma.user.findUnique({
@@ -24,7 +38,7 @@ export const POST = async (req) => {
       );
     }
 
-    console.log(email, password, existingUser);
+    // console.log(email, password, existingUser);
 
     // Нууц үгийг энкриптлэх
     const hashedPassword = await bcrypt.hash(password, 10);

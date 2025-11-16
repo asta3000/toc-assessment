@@ -21,14 +21,14 @@
         "name_en": "Summary",
         "link": "/registration/summaries",
         "status": true,
-        "role": ["VERIFIER"]
+        "role": []
       },
       {
         "name": "Зөвлөмж",
         "name_en": "Advices",
         "link": "/registration/advices",
         "status": true,
-        "role": ["VERIFIER"]
+        "role": []
       }
     ]
   }

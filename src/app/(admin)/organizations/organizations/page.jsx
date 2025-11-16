@@ -44,7 +44,12 @@ const Organizations = () => {
     ?.metadatas;
 
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState({});
+  const [data, setData] = useState({
+    name: "",
+    memberId: "",
+    operationId: "",
+    sectorId: "",
+  });
   const [search, setSearch] = useState("");
   const t = useTranslation();
 

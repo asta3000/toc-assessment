@@ -3,18 +3,25 @@
 import React, { useMemo, useState } from "react";
 import lodash from "lodash";
 import toast, { Toaster } from "react-hot-toast";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import useSWR from "swr";
 
 import { LoginViaCredentials } from "@/functions/Login";
 import { WhiteInput } from "@/components/MyInput";
-import { borderblue, textblue, selfRegistration } from "@/libs/constants";
+import {
+  borderblue,
+  textblue,
+  selfRegistration,
+  toastperiod,
+} from "@/libs/constants";
 import { FullSolidButton } from "@/components/MyButton";
 import { useTranslation } from "@/hooks/useTranslation";
 import { FullSpinner, Spinner } from "@/components/Spinner";
 import { fetcher } from "@/libs/client";
+import { loginSchema } from "@/libs/schemas";
 
 const Login = () => {
+  const router = useRouter();
   const uris = useMemo(() => {
     return ["/parameters/" + selfRegistration];
   }, []);
@@ -46,34 +53,52 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (lodash.isEmpty(data.email) || lodash.isEmpty(data.password)) {
-      toast.error("Нэвтрэх нэр эсвэл нууц үг оруулаагүй байна.", {
-        duration: 2000,
+    const parsed = loginSchema.safeParse(data);
+    if (!parsed.success) {
+      const firstError = parsed.error.issues[0];
+      toast.error(firstError.message, {
+        duration: toastperiod,
         position: "top-right",
         className: "bg-red-400 text-white",
-        style: {
-          border: "2px solid rgb(192, 38, 19)",
-        },
+        style: { border: "2px solid rgb(192, 38, 19)" },
       });
-    } else {
+      return;
+    }
+
+    try {
       setLoading(true);
       const result = await LoginViaCredentials({
         email: data.email,
         password: data.password,
       });
 
+      // console.log("R: ", result);
+
       if (lodash.isEmpty(result)) {
         toast.error("Нэвтрэлт амжилтгүй боллоо.", {
-          duration: 2000,
+          duration: toastperiod,
           position: "top-right",
           className: "bg-red-400 text-white",
           style: {
             border: "2px solid rgb(192, 38, 19)",
           },
         });
-      } else {
-        redirect("/");
+        return;
       }
+
+      toast.success("Амжилттай нэвтэрлээ.", {
+        duration: toastperiod,
+        position: "top-right",
+        className: "bg-green-400 text-white",
+        style: {
+          border: "2px solid rgb(192, 38, 19)",
+        },
+      });
+
+      router.replace("/");
+    } catch (error) {
+      console.log("E: ", error);
+    } finally {
       setLoading(false);
     }
   };
@@ -110,13 +135,16 @@ const Login = () => {
         <div
           className={`mt-3 text-xs flex justify-between items-center ${textblue}`}
         >
-          <p className="cursor-pointer" onClick={() => redirect("/register")}>
+          <p
+            className="cursor-pointer"
+            onClick={() => router.replace("/register")}
+          >
             {allDatas[0][0]?.value === "1" ? t("auth.CreateAccount") : ""}
           </p>
           <p
             className="cursor-pointer"
             onClick={() => {
-              redirect("/recovery");
+              router.replace("/recovery");
             }}
           >
             {t("auth.RecoverAccount")}

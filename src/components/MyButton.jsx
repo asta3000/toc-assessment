@@ -39,9 +39,13 @@ export const SolidButton = (props) => {
       onClick={(event) => {
         // console.log(props.action);
         lodash.isEmpty(props.action)
-          ? handleClickAdd(props.setModal, props.setData)
+          ? handleClickAdd(props.setModal, props.setData, props.setSavedScrollY)
           : props.action === "cancel"
-            ? handleClickCancel(props.setModal, props.setData)
+            ? handleClickCancel(
+                props.setModal,
+                props.setData,
+                props.savedScrollY
+              )
             : props.action === "decline"
               ? props.setData()
               : null;

@@ -127,7 +127,10 @@ const Organization = () => {
   }, []);
 
   useEffect(() => {
-    if (answer.descriptions.length === 0 || optionAnswer.options.length === 0) {
+    if (
+      answer?.descriptions?.length === 0 ||
+      optionAnswer?.options?.length === 0
+    ) {
       getAnswerCount();
     }
   }, [answer, optionAnswer]);
@@ -356,6 +359,7 @@ const Organization = () => {
         <div className="w-full">
           {assessment.status === STATUS_VERIFIED ||
           assessment.status === STATUS_DONE ? null : (
+            // Асуултуудыг хэвлэнэ.
             <Questions
               datas={allDatas}
               module={module}

@@ -5,12 +5,23 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/libs/client";
 import cors from "@/libs/cors";
 import { puterror, TEXT, RADIO } from "@/libs/constants";
+import { questionnaireBaseSchema } from "@/libs/schemas";
 
 export const PUT = async (req, { params }) => {
   const { slug } = await params;
   try {
     const { data, subQuestions, options } = await req.json();
     // console.log("ROUTE: ", data, subQuestions, options);
+
+    const parsed = questionnaireBaseSchema?.safeParse(data);
+
+    if (!parsed?.success) {
+      const firstError = parsed?.error?.issues[0];
+      return NextResponse.json(
+        { message: firstError?.message },
+        { status: 302, headers: cors }
+      );
+    }
 
     await prisma.$transaction(async (tx) => {
       // Үндсэн асуултын утгыг өөрчлөх

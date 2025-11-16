@@ -7,6 +7,7 @@ import bcrypt from "bcrypt";
 import { prisma } from "@/libs/client";
 import cors from "@/libs/cors";
 import { geterror, puterror } from "@/libs/constants";
+import { resetPasswordSchema, userBaseSchema } from "@/libs/schemas";
 
 export const GET = async (req, { params }) => {
   const { slug } = await params;
@@ -29,6 +30,7 @@ export const GET = async (req, { params }) => {
 export const PUT = async (req, { params }) => {
   let data;
   let hashedPassword;
+  let parsed;
   const { slug } = await params;
   try {
     const {
@@ -39,10 +41,39 @@ export const PUT = async (req, { params }) => {
       gender,
       mobile,
       password,
+      confirmPassword,
       role,
       status,
       organizationId,
     } = await req.json();
+
+    if (lodash.isEmpty(password) && lodash.isEmpty(confirmPassword)) {
+      parsed = userBaseSchema?.safeParse({
+        firstname,
+        lastname,
+        email,
+        position,
+        gender,
+        mobile,
+        role,
+        status,
+        organizationId,
+      });
+    } else {
+      parsed = resetPasswordSchema?.safeParse({
+        email,
+        password,
+        confirmPassword,
+      });
+    }
+
+    if (!parsed?.success) {
+      const firstError = parsed?.error?.issues[0];
+      return NextResponse.json(
+        { message: firstError?.message },
+        { status: 302, headers: cors }
+      );
+    }
 
     // Нууц үгийг энкриптлэх
     if (lodash.isEmpty(password)) {
@@ -60,16 +91,7 @@ export const PUT = async (req, { params }) => {
     } else {
       hashedPassword = await bcrypt.hash(password, 10);
       data = {
-        firstname,
-        lastname,
-        email,
-        position,
-        gender,
-        mobile,
         password: hashedPassword,
-        role,
-        status,
-        organizationId,
       };
     }
 

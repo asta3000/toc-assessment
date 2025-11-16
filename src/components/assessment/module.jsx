@@ -6,12 +6,13 @@ import React from "react";
 import { SolidButton } from "../MyButton";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useAssessmentStore } from "@/stores/storeAssessment";
+import PieDefault from "../charts/Pie";
 
 const Module = (props) => {
   // console.log("Module props:", props);
   const t = useTranslation();
   const { assessment } = useAssessmentStore();
-  const disabled = [STATUS_SENT].includes(assessment?.status);
+  const disabled = [STATUS_SENT].includes(assessment?.statusId);
   const answers =
     props.answerCount?.reduce((c, el) => c + (el.count ?? 0), 0) ?? 0;
   const questions =
@@ -19,9 +20,7 @@ const Module = (props) => {
 
   return (
     <div className="w-full flex flex-col gap-4 items-center justify-center">
-      <div className="flex items-center justify-center gap-1 text-5xl font-semibold text-blue-900">
-        <p>{answers}</p> / <p>{questions}</p>
-      </div>
+      <PieDefault total={questions} performance={answers} />
       <ul className="text-sm w-full">
         {props.modules
           ?.filter((m) => m.assessmentId === props.assessmentId)

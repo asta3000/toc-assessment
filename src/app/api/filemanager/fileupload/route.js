@@ -7,7 +7,7 @@ import cors from "@/libs/cors";
 export const POST = async (req) => {
   const formData = await req.formData();
   const file = formData.get("file");
-  const basePath = path.join(process.cwd(), "public", "assets");
+  const basePath = path.join(process.cwd(), "src", "assets");
 
   if (!file) {
     return NextResponse.json({}, { status: 400, headers: cors });

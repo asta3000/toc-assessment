@@ -326,32 +326,34 @@ export const QuestionnaireOptions = (props) => {
 
     return (
       <Fragment>
-        {options?.map((option) => (
-          <div className="my-2" key={option.id}>
-            <input
-              type="radio"
-              name={props.data?.id} // Асуултын дугаар
-              value={option.id} // Хувилбарын дугаар
-              checked={option.id === selected} // Хувилбарын дугаар нь сонгосонтой таарч байвал true байна.
-              className="mr-2"
-              disabled={disabled} // Үнэлгээний төлөвөөс хамаарч унших горимд шилжих
-              onChange={(event) =>
-                handleChangeOptionAnswer(
-                  event,
-                  null,
-                  null,
-                  answerTypeId,
-                  props.data.id,
-                  props.data,
-                  option
-                )
-              }
-            />
-            {system.language === "mn"
-              ? option.name
-              : (option.name_en ?? option.name)}
-          </div>
-        ))}
+        {options?.map((option) => {
+          return (
+            <div className="my-2" key={option.id}>
+              <input
+                type="radio"
+                name={props.data?.id} // Асуултын дугаар
+                value={option.id} // Хувилбарын дугаар
+                checked={option.id === selected} // Хувилбарын дугаар нь сонгосонтой таарч байвал true байна.
+                className="mr-2"
+                disabled={disabled} // Үнэлгээний төлөвөөс хамаарч унших горимд шилжих
+                onChange={(event) =>
+                  handleChangeOptionAnswer(
+                    event,
+                    null,
+                    null,
+                    answerTypeId,
+                    props.data.id,
+                    props.data,
+                    option
+                  )
+                }
+              />
+              {system.language === "mn"
+                ? option.name
+                : (option.name_en ?? option.name)}
+            </div>
+          );
+        })}
 
         {/* Асуултын нэмэлт асуултууд (хэрэглэгчийн хариулт шаардлагыг хангавал харагдана) */}
         {isCondition && (

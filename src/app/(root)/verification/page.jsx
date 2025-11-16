@@ -8,7 +8,6 @@ import { fetcher, instance } from "@/libs/client";
 import { useSystemStore } from "@/stores/storeSystem";
 import { useUserStore } from "@/stores/storeUser";
 import { useVerificationStore } from "@/stores/storeVerification";
-import { useAssessmentStore } from "@/stores/storeAssessment";
 import { STATUS_VERIFIED } from "@/libs/constants";
 
 import lodash from "lodash";

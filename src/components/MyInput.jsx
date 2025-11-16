@@ -1,6 +1,7 @@
 "use client";
 
 import lodash from "lodash";
+import clsx from "clsx";
 
 import { useTranslation } from "@/hooks/useTranslation";
 import { textblue, blue } from "@/libs/constants";
@@ -27,10 +28,21 @@ export const WhiteInput = (props) => {
       <input
         type={props.type}
         name={props.name}
-        className={`w-full p-2 border-b-[1px] border-b-[${blue}] bg-white text-black focus:outline-none caret-black`}
+        className={clsx(
+          "w-full p-2 border-b-[1px]  bg-white text-black focus:outline-none caret-black",
+          lodash.isEmpty(props.validationError)
+            ? `border-b-[${blue}]`
+            : "border-b-red-300"
+        )}
         value={props.value}
         onChange={(event) =>
-          handleChangeValue(event, props.setData, props.data)
+          handleChangeValue(
+            event,
+            props.setData,
+            props.data,
+            props.activeSchema,
+            props.setErrors
+          )
         }
         disabled={props.disabled}
       />

@@ -5,6 +5,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/libs/client";
 import cors from "@/libs/cors";
 import { geterror, posterror, TEXT } from "@/libs/constants";
+import { questionnaireBaseSchema } from "@/libs/schemas";
 
 export const GET = async () => {
   try {
@@ -38,17 +39,36 @@ export const POST = async (req) => {
     const { data, subQuestions, options } = await req.json();
     // console.log("ROUTE: ", data, subQuestions, options);
 
+    const parsed = questionnaireBaseSchema?.safeParse(data);
+    // console.log("P: ", parsed);
+
+    if (!parsed?.success) {
+      const firstError = parsed?.error?.issues[0];
+      return NextResponse.json(
+        { message: firstError?.message },
+        { status: 302, headers: cors }
+      );
+    }
+
     await prisma.$transaction(async (tx) => {
       const question = await tx.question.create({
         data: {
           name: data.name,
           name_en: data.name_en,
           status: data.status,
-          questionTypeId: data.questionTypeId,
-          answerTypeId: data.answerTypeId,
-          assessmentId: data.assessmentId,
-          moduleId: data.moduleId,
-          condition: parseFloat(data.condition),
+          QuestionType: {
+            connect: { id: data.questionTypeId },
+          },
+          AnswerType: {
+            connect: { id: data.answerTypeId },
+          },
+          Assessment: {
+            connect: { id: data.assessmentId },
+          },
+          Module: {
+            connect: { id: data.moduleId },
+          },
+          condition: parseFloat(data.condition) ?? 0,
         },
       });
 
@@ -58,6 +78,8 @@ export const POST = async (req) => {
             ...subQuestion,
             questionId: question.id,
           };
+
+          // console.log("SQ: ", subQuestionData);
 
           await tx.subQuestion.create({
             data: subQuestionData,
@@ -80,6 +102,8 @@ export const POST = async (req) => {
               questionId: question.id,
               assessmentId: data.assessmentId,
             };
+
+            // console.log("O: ", optionData);
 
             await tx.option.create({
               data: optionData,

@@ -19,7 +19,7 @@ const Questions = (props) => {
   const { system } = useSystemStore();
   const { user } = useUserStore();
   const { assessment } = useAssessmentStore();
-  const disabled = [STATUS_SENT].includes(assessment?.status);
+  const disabled = [STATUS_SENT].includes(assessment?.statusId);
   const t = useTranslation();
   // console.log(disabled);
   const answers =
@@ -376,7 +376,7 @@ const Questions = (props) => {
     });
   };
 
-  console.log("Questions props: ", props);
+  // console.log("Questions props: ", assessment);
 
   return (
     <form
@@ -406,12 +406,14 @@ const Questions = (props) => {
                   // Асуултуудыг хэвлэж байна
                   return (
                     <div key={index} className="mb-10">
+                      {/* Асуултууд */}
                       <p className={clsx(textblue)}>
                         {t("assessment.Question")} {index + 1}.
                       </p>
                       <p className={clsx(textblue, "font-semibold")}>
                         {system.language === "mn" ? data.name : data.name_en}
                       </p>
+                      {/* Хариултын хувилбаруудыг хэвлэнэ. */}
                       <QuestionnaireOptions
                         data={data}
                         options={props.datas[2]?.filter(

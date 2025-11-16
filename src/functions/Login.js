@@ -2,17 +2,17 @@
 
 import { signIn, signOut, auth } from "@/auth";
 
-export const LoginViaGitHub = async () => {
-  await signIn("github", { callbackUrl: "/" });
-};
+// export const LoginViaGitHub = async () => {
+//   await signIn("github", { callbackUrl: "/" });
+// };
 
-export const LoginViaGoogle = async () => {
-  await signIn("google", { callbackUrl: "/" });
-};
+// export const LoginViaGoogle = async () => {
+//   await signIn("google", { callbackUrl: "/" });
+// };
 
-export const LoginViaMicrosoft = async () => {
-  await signIn("microsoft-entra-id", { callbackUrl: "/" });
-};
+// export const LoginViaMicrosoft = async () => {
+//   await signIn("microsoft-entra-id", { callbackUrl: "/" });
+// };
 
 export const LoginViaCredentials = async ({ email, password }) => {
   try {
@@ -24,7 +24,7 @@ export const LoginViaCredentials = async ({ email, password }) => {
 
     return result;
   } catch (error) {
-    console.error("CREDENTIAL_LOGIN_CATCH: ", error);
+    console.error("E: ", error);
     return null;
   }
 };

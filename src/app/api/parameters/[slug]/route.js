@@ -5,6 +5,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/libs/client";
 import cors from "@/libs/cors";
 import { geterror, puterror } from "@/libs/constants";
+import { parameterSchema } from "@/libs/schemas";
 
 export const GET = async (req, { params }) => {
   const { slug } = await params;
@@ -34,8 +35,18 @@ export const PUT = async (req, { params }) => {
   try {
     const { name, value, description } = await req.json();
 
-    if (!name || !value || !description) {
-      throw new Error(puterror);
+    const parsed = parameterSchema?.safeParse({
+      name,
+      value,
+      description,
+    });
+
+    if (!parsed?.success) {
+      const firstError = parsed?.error?.issues[0];
+      return NextResponse.json(
+        { message: firstError?.message },
+        { status: 302, headers: cors }
+      );
     }
 
     data = {

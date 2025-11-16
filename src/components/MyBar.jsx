@@ -108,6 +108,7 @@ export const AdminBar = () => {
 export const AdminSubBar = () => {
   const path = usePathname();
   const { system } = useSystemStore();
+  const { user } = useUserStore();
 
   if (path === "/files") return;
 
@@ -116,7 +117,7 @@ export const AdminSubBar = () => {
       <div className="mx-15 px-5 flex justify-start items-center gap-1">
         {adminsubmenus
           .filter((m) => m.title === path.split("/")[1])[0]
-          .menus.filter((m) => m.status === true)
+          .menus.filter((m) => m.status === true && m.role.includes(user?.role))
           .map((menu, index) => {
             return (
               <Link
@@ -280,6 +281,7 @@ export const UserBar = () => {
 export const UserSubBar = () => {
   const path = usePathname();
   const { system } = useSystemStore();
+  const { user } = useUserStore();
 
   if (path.split("/")[1] !== "registration") return;
 
@@ -287,8 +289,8 @@ export const UserSubBar = () => {
     <div className={`text-sm mt-10 mb-5 border-b-[1px] ${borderblue}`}>
       <div className="mx-15 px-5 flex justify-start items-center gap-1">
         {usersubmenus
-          .filter((m) => m.title === path.split("/")[1])[0]
-          .menus.filter((m) => m.status === true)
+          .find((m) => m.title === path.split("/")[1])
+          .menus.filter((m) => m.status === true && m.role.includes(user?.role))
           .map((menu, index) => {
             return (
               <Link

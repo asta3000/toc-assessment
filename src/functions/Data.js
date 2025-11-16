@@ -6,8 +6,8 @@ import lodash from "lodash";
 import { instance } from "@/libs/client";
 
 export const DataRegister = async (url, data) => {
-  console.log(url);
-  console.log(data);
+  // console.log(url);
+  // console.log(data);
   await instance
     .post(url, data)
     .then((result) => {
@@ -48,8 +48,8 @@ export const DataRegister = async (url, data) => {
 };
 
 export const DataEditorBySlug = async (url, data) => {
-  console.log(url);
-  console.log(data);
+  // console.log(url);
+  // console.log(data);
 
   const id = lodash.isEmpty(data?.id)
     ? lodash.isEmpty(data?.data?.id)

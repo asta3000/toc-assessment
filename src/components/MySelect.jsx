@@ -4,6 +4,7 @@ import lodash from "lodash";
 
 import { handleChangeValue } from "@/functions/page";
 import { textblue, blue } from "@/libs/constants";
+import clsx from "clsx";
 
 export const WhiteSelect = (props) => {
   // console.log("SELECT: ", props.data);
@@ -11,12 +12,23 @@ export const WhiteSelect = (props) => {
     <div className="flex flex-col w-full text-sm">
       <label className={`${textblue}`}>{props.label}</label>
       <select
-        className={`w-full p-2 border-b-[1px] border-b-[${blue}] bg-white text-black focus:outline-none caret-black`}
+        className={clsx(
+          "w-full p-2 border-b-[1px] bg-white text-black focus:outline-none caret-black",
+          lodash.isEmpty(props.validationError)
+            ? `border-b-[${blue}]`
+            : "border-b-red-300"
+        )}
         name={props.name}
         disabled={props.disabled}
         value={props.value}
         onChange={(event) =>
-          handleChangeValue(event, props.setData, props.data)
+          handleChangeValue(
+            event,
+            props.setData,
+            props.data,
+            props.activeSchema,
+            props.setErrors
+          )
         }
       >
         <option value="">Сонгоно уу</option>

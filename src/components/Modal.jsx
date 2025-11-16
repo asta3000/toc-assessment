@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Fragment } from "react";
+import React, { useState, Fragment } from "react";
 import clsx from "clsx";
 import { GrClose } from "react-icons/gr";
 
@@ -12,14 +12,63 @@ import { Spinner } from "@/components/Spinner";
 import { useTranslation } from "@/hooks/useTranslation";
 import { textblue } from "@/libs/constants";
 import { handleClickCancel, handleClickSave } from "@/functions/page";
+import {
+  answerTypeSchema,
+  assessmentSchema,
+  contactSchema,
+  faqSchema,
+  guideSchema,
+  memberSchema,
+  moduleSchema,
+  operationSchema,
+  organizationSchema,
+  parameterSchema,
+  questionnaireBaseSchema,
+  questionnaireSchema,
+  questionTypeSchema,
+  resetPasswordSchema,
+  sectorSchema,
+  statusSchema,
+  symbolSchema,
+  userBaseSchema,
+  userRegisterSchema,
+  yearSchema,
+} from "@/libs/schemas";
 
 export const FullModal = (props) => {
   const t = useTranslation();
-  // console.log("PROPS_MODAL: ", props);
+  const [errors, setErrors] = useState({});
+  const schemaMap = {
+    "/organizations": organizationSchema,
+    "/users":
+      props.action === "add"
+        ? userRegisterSchema
+        : props.action === "password"
+          ? resetPasswordSchema
+          : userBaseSchema,
+    "/parameters": parameterSchema,
+    "/years": yearSchema,
+    "/members": memberSchema,
+    "/operations": operationSchema,
+    "/sectors": sectorSchema,
+    "/status": statusSchema,
+    "/symbols": symbolSchema,
+    "/guides": guideSchema,
+    "/contacts": contactSchema,
+    "/assessments": assessmentSchema,
+    "/modules": moduleSchema,
+    "/questiontypes": questionTypeSchema,
+    "/answertypes": answerTypeSchema,
+    "/faqs": faqSchema,
+    "/questions": questionnaireBaseSchema,
+  };
+  const activeSchema = schemaMap[props.url[0]];
+
+  // console.log("PROPS_MODAL: ", errors);
   return (
     <form
       method="POST"
-      onSubmit={(event) =>
+      onSubmit={(event) => {
         handleClickSave(
           event,
           props.url,
@@ -32,9 +81,11 @@ export const FullModal = (props) => {
           props.options,
           props.setOptions,
           props.subQuestions,
-          props.setSubQuestions
-        )
-      }
+          props.setSubQuestions,
+          activeSchema,
+          setErrors
+        );
+      }}
       className="w-full p-2 overflow-x-hidden overflow-y-auto flex flex-col justify-center items-center border-[1px] border-blue-200 rounded-xl"
     >
       {/* Гарчиг */}
@@ -65,6 +116,9 @@ export const FullModal = (props) => {
             metadatas={props.metadatas}
             data={props.data}
             setData={props.setData}
+            validationErrors={errors}
+            activeSchema={activeSchema}
+            setErrors={setErrors}
           />
         ) : props?.modal === "simpleone" ? (
           <SimpleOne
@@ -73,6 +127,9 @@ export const FullModal = (props) => {
             action={props.action}
             setData={props.setData}
             selection={props.selection}
+            validationErrors={errors}
+            activeSchema={activeSchema}
+            setErrors={setErrors}
           />
         ) : props?.modal === "questionnaire" ? (
           <Questionnaire
@@ -86,6 +143,9 @@ export const FullModal = (props) => {
             subQuestions={props.subQuestions}
             setSubQuestions={props.setSubQuestions}
             handleChangeValue={props.handleChangeValue}
+            validationErrors={errors}
+            activeSchema={activeSchema}
+            setErrors={setErrors}
           />
         ) : null}
       </div>

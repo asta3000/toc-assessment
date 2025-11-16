@@ -9,18 +9,35 @@ import React, {
 } from "react";
 import lodash from "lodash";
 import toast, { Toaster } from "react-hot-toast";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import useSWR from "swr";
 
 import { WhiteInput } from "@/components/MyInput";
-import { borderblue, selfRegistration, textblue } from "@/libs/constants";
+import {
+  borderblue,
+  selfRegistration,
+  textblue,
+  toastperiod,
+} from "@/libs/constants";
 import { FullSolidButton } from "@/components/MyButton";
 import { useTranslation } from "@/hooks/useTranslation";
 import { FullSpinner, Spinner } from "@/components/Spinner";
 import handleGenerateNumber from "@/libs/generate";
 import { fetcher, instance } from "@/libs/client";
+import {
+  recoveryEmailSchema,
+  recoveryOTPSchema,
+  recoveryPasswordSchema,
+} from "@/libs/schemas";
+
+const getActiveSchema = (state) => {
+  if (state === "SENDOTP") return recoveryEmailSchema;
+  if (state === "VERIFY") return recoveryOTPSchema;
+  return recoveryPasswordSchema;
+};
 
 const Recovery = () => {
+  const router = useRouter();
   const initialState = "SENDOTP";
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState({
@@ -29,6 +46,7 @@ const Recovery = () => {
     userOtp: "",
     password: "",
     confirmPassword: "",
+    isEmailSent: false,
   });
 
   const resetPassword = async () => {
@@ -38,9 +56,9 @@ const Recovery = () => {
       .then((result) => {
         if (result.status === 200) {
           toast.success("Нууц үгийг амжилттай сэргээлээ", {
-            duration: 2000,
+            duration: toastperiod,
             position: "top-right",
-            className: "bg-red-400 text-white",
+            className: "bg-green-400 text-white",
             style: {
               border: "2px solid rgb(192, 38, 19)",
             },
@@ -48,9 +66,9 @@ const Recovery = () => {
         }
       })
       .catch((error) => {
-        console.log(error);
+        console.log("E: ", error);
         toast.error(error.message, {
-          duration: 2000,
+          duration: toastperiod,
           position: "top-right",
           className: "bg-red-400 text-white",
           style: {
@@ -72,46 +90,26 @@ const Recovery = () => {
         return "VERIFY";
 
       case "VERIFY":
-        if (
-          data.email &&
-          !lodash.isEmpty(data.otp) &&
-          !lodash.isEmpty(data.userOtp) &&
-          data.otp === data.userOtp
-        ) {
-          toast.success("Баталгаажилт амжилттай боллоо.", {
-            duration: 2000,
-            position: "top-right",
-            className: "bg-red-400 text-white",
-            style: {
-              border: "2px solid rgb(192, 38, 19)",
-            },
-          });
-        } else {
-          toast.error("Баталгаажилт амжилтгүй боллоо.", {
-            duration: 2000,
-            position: "top-right",
-            className: "bg-red-400 text-white",
-            style: {
-              border: "2px solid rgb(192, 38, 19)",
-            },
-          });
-        }
+        toast.success("Баталгаажилт амжилттай боллоо.", {
+          duration: toastperiod,
+          position: "top-right",
+          className: "bg-green-400 text-white",
+          style: {
+            border: "2px solid rgb(192, 38, 19)",
+          },
+        });
         return "REFRESH";
 
       case "REFRESH":
-        if (
-          !lodash.isEmpty(data.password) &&
-          data.password === data.confirmPassword
-        ) {
-          resetPassword();
-          setData({
-            email: "",
-            otp: "",
-            userOtp: "",
-            password: "",
-            confirmPassword: "",
-          });
-        }
+        resetPassword();
+        setData({
+          email: "",
+          otp: "",
+          userOtp: "",
+          password: "",
+          confirmPassword: "",
+          isEmailSent: false,
+        });
         return "SENDOTP";
     }
     return state;
@@ -139,19 +137,23 @@ const Recovery = () => {
       .then((result) => {
         if (result.status === 200) {
           toast.success("Бүртгэлтэй имэйл руу нэг удаагийн нууц үг илгээлээ.", {
-            duration: 2000,
+            duration: toastperiod,
             position: "top-right",
-            className: "bg-red-400 text-white",
+            className: "bg-green-400 text-white",
             style: {
               border: "2px solid rgb(192, 38, 19)",
             },
           });
         }
+        setData({
+          ...data,
+          isEmailSent: true,
+        });
       })
       .catch((error) => {
-        console.log(error);
+        console.log("E: ", error);
         toast.error("Нэг удаагийн нууц үг илгээхэд алдаа гарлаа.", {
-          duration: 2000,
+          duration: toastperiod,
           position: "top-right",
           className: "bg-red-400 text-white",
           style: {
@@ -165,7 +167,8 @@ const Recovery = () => {
     if (
       !lodash.isEmpty(data.email) &&
       !lodash.isEmpty(data.otp) &&
-      lodash.isEmpty(data.userOtp)
+      lodash.isEmpty(data.userOtp) &&
+      data.isEmailSent === false
     ) {
       sendMail();
     }
@@ -187,7 +190,25 @@ const Recovery = () => {
         className={`min-w-[400px] border-[1px] rounded-xl ${borderblue} flex flex-col p-10 gap-5`}
         onSubmit={(event) => {
           event.preventDefault();
-          dispatch({ type: state });
+
+          const activeSchema = getActiveSchema(state);
+          const parsed = activeSchema?.safeParse(data);
+          if (!parsed.success) {
+            const firstError = parsed?.error?.issues[0];
+            toast.error(firstError?.message, {
+              duration: toastperiod,
+              position: "top-right",
+              className: "bg-red-400 text-white",
+              style: { border: "2px solid rgb(192, 38, 19)" },
+            });
+            return;
+          }
+
+          try {
+            dispatch({ type: state });
+          } catch (error) {
+            console.log("E: ", error);
+          }
         }}
       >
         {state === "SENDOTP" && (
@@ -253,13 +274,16 @@ const Recovery = () => {
         <div
           className={`mt-3 text-xs flex justify-between items-center ${textblue}`}
         >
-          <p className="cursor-pointer" onClick={() => redirect("/register")}>
+          <p
+            className="cursor-pointer"
+            onClick={() => router.replace("/register")}
+          >
             {allDatas[0][0]?.value === "1" ? t("auth.CreateAccount") : ""}
           </p>
           <p
             className="cursor-pointer"
             onClick={() => {
-              redirect("/login");
+              router.replace("/login");
             }}
           >
             {t("auth.LogIn")}

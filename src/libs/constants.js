@@ -12,9 +12,6 @@ export const bordergreen = "border-[#78AA42]";
 
 export const url = "/api";
 
-export const selfRegistration = "686a742837a61fb9a006aa43";
-export const fileAttachment = "688368c62b9643a5fc4aaf88";
-
 export const ADMIN = "ADMIN";
 export const VERIFIER = "VERIFIER";
 export const ORGANIZATION = "ORGANIZATION";
@@ -38,3 +35,10 @@ export const STATUS_VERIFIED = "687260066703e9be9f0af7f0";
 export const STATUS_DONE = "687260416703e9be9f0af7f5";
 
 export const CYCLE = "686a887637a61fb9a006aa94";
+
+export const selfRegistration = "686a742837a61fb9a006aa43";
+export const fileAttachment = "688368c62b9643a5fc4aaf88";
+
+export const toastperiod = 3500;
+
+export const organizationToC = "686e87c1de024dc001798940";

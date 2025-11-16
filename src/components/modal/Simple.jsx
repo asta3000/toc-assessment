@@ -12,7 +12,7 @@ import { useSystemStore } from "@/stores/storeSystem";
 // Өөрчлөх үйлдэл хийх үед хэрэглэгчийн нууц үгийг өөрчлөхгүй.
 
 export const SimpleOne = (props) => {
-  // console.log("SEL: ", props.selection);
+  // console.log("SEL: ", props.validationErrors);
   const system = useSystemStore.getState().system;
   return (
     <div
@@ -65,66 +65,97 @@ export const SimpleOne = (props) => {
         ) : // Бүртгэх үйлдэл
         props.action === "add" ? (
           metadata.type === "select" ? (
-            <WhiteSelect
-              name={metadata.field}
-              label={
-                system.language === "mn" ? metadata.name : metadata.name_en
-              }
-              value={props.data[metadata.field]}
-              key={index}
-              disabled={false}
-              selection={
-                metadata.selection ? metadata.selection : props.selection
-              }
-              setData={props.setData}
-              data={props.data}
-              metadata={metadata}
-            />
+            <div key={index}>
+              <WhiteSelect
+                name={metadata.field}
+                label={
+                  system.language === "mn" ? metadata.name : metadata.name_en
+                }
+                value={props.data[metadata.field]}
+                disabled={false}
+                selection={
+                  metadata.selection ? metadata.selection : props.selection
+                }
+                setData={props.setData}
+                data={props.data}
+                metadata={metadata}
+                validationError={props.validationErrors[metadata.field]}
+                activeSchema={props.activeSchema}
+                setErrors={props.setErrors}
+              />
+              {props.validationErrors[metadata.field] && (
+                <p className="text-xs text-red-500 mt-1 italic">
+                  {props.validationErrors[metadata.field]}
+                </p>
+              )}
+            </div>
           ) : (
-            <WhiteInput
-              name={metadata.field}
-              type={metadata.type}
-              label={
-                system.language === "mn" ? metadata.name : metadata.name_en
-              }
-              value={props.data[metadata.field]}
-              key={index}
-              disabled={false}
-              setData={props.setData}
-              data={props.data}
-            />
+            <div key={index}>
+              <WhiteInput
+                name={metadata.field}
+                type={metadata.type}
+                label={
+                  system.language === "mn" ? metadata.name : metadata.name_en
+                }
+                value={props.data[metadata.field]}
+                disabled={false}
+                setData={props.setData}
+                data={props.data}
+                validationError={props.validationErrors[metadata.field]}
+                activeSchema={props.activeSchema}
+                setErrors={props.setErrors}
+              />
+              {props.validationErrors[metadata.field] && (
+                <p className="text-xs text-red-500 mt-1 italic">
+                  {props.validationErrors[metadata.field]}
+                </p>
+              )}
+            </div>
           )
         ) : // Өөрчлөх үйлдэл
         props.action === "edit" ? (
           metadata.type === "select" ? (
-            <WhiteSelect
-              name={metadata.field}
-              label={
-                system.language === "mn" ? metadata.name : metadata.name_en
-              }
-              value={props.data[metadata.field]}
-              key={index}
-              disabled={false}
-              selection={
-                metadata.selection ? metadata.selection : props.selection
-              }
-              setData={props.setData}
-              data={props.data}
-              metadata={metadata}
-            />
+            <div key={index}>
+              <WhiteSelect
+                name={metadata.field}
+                label={
+                  system.language === "mn" ? metadata.name : metadata.name_en
+                }
+                value={props.data[metadata.field]}
+                disabled={false}
+                selection={
+                  metadata.selection ? metadata.selection : props.selection
+                }
+                setData={props.setData}
+                data={props.data}
+                metadata={metadata}
+                validationError={props.validationErrors[metadata.field]}
+                activeSchema={props.activeSchema}
+                setErrors={props.setErrors}
+              />
+            </div>
           ) : metadata.type !== "password" ? (
-            <WhiteInput
-              name={metadata.field}
-              type={metadata.type}
-              label={
-                system.language === "mn" ? metadata.name : metadata.name_en
-              }
-              value={props.data[metadata.field]}
-              key={index}
-              disabled={false}
-              setData={props.setData}
-              data={props.data}
-            />
+            <div key={index}>
+              <WhiteInput
+                name={metadata.field}
+                type={metadata.type}
+                label={
+                  system.language === "mn" ? metadata.name : metadata.name_en
+                }
+                value={props.data[metadata.field]}
+                disabled={false}
+                setData={props.setData}
+                data={props.data}
+                validationError={props.validationErrors[metadata.field]}
+                activeSchema={props.activeSchema}
+                setErrors={props.setErrors}
+              />
+              {props.validationErrors[metadata.field] && (
+                <p className="text-xs text-red-500 mt-1 italic">
+                  {props.validationErrors[metadata.field]}
+                </p>
+              )}
+            </div>
           ) : null
         ) : null;
       })}

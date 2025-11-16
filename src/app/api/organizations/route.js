@@ -6,6 +6,7 @@ import lodash from "lodash";
 import { prisma } from "@/libs/client";
 import cors from "@/libs/cors";
 import { geterror, posterror, STATUS_NEW } from "@/libs/constants";
+import { organizationSchema } from "@/libs/schemas";
 
 export const GET = async () => {
   try {
@@ -20,7 +21,7 @@ export const GET = async () => {
 
     return NextResponse.json(organizations, { status: 200, headers: cors });
   } catch (error) {
-    console.error("CATCH: ", error);
+    console.error("E: ", error);
     return NextResponse.json(
       { message: geterror },
       { status: 500, headers: cors }
@@ -32,7 +33,29 @@ export const POST = async (req) => {
   let data;
   let organization;
   try {
-    const { name, memberId, operationId, sectorId, status } = await req.json();
+    const {
+      name,
+      memberId,
+      operationId,
+      sectorId,
+      status = "1",
+    } = await req.json();
+
+    const parsed = organizationSchema?.safeParse({
+      name,
+      memberId,
+      operationId,
+      sectorId,
+    });
+
+    if (!parsed?.success) {
+      const firstError = parsed?.error?.issues[0];
+      return NextResponse.json(
+        { message: firstError?.message },
+        { status: 302, headers: cors }
+      );
+    }
+
     data = {
       name,
       memberId,
@@ -46,7 +69,7 @@ export const POST = async (req) => {
         data,
       });
 
-      if (organization && !lodash.isEmpty(organization.memberId)) {
+      if (organization) {
         const year = new Date().getFullYear();
         const assessments = await tx.assessment.findMany();
         const years = await tx.year.findMany({
@@ -67,8 +90,6 @@ export const POST = async (req) => {
           }
         }
 
-        console.log(rows);
-
         await tx.performance.createMany({
           data: rows,
         });
@@ -77,7 +98,7 @@ export const POST = async (req) => {
 
     return NextResponse.json(organization, { status: 201, headers: cors });
   } catch (error) {
-    console.error("CATCH: ", error);
+    console.error("E: ", error);
     return NextResponse.json(
       { message: posterror },
       { status: 500, headers: cors }

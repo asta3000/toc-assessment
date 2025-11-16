@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 import cors from "@/libs/cors";
 
 export const POST = async (req) => {
-  const basePath = path.join(process.cwd(), "public", "assets");
+  const basePath = path.join(process.cwd(), "src", "assets");
   const { action, name, path: relPath = "" } = await req.json();
   const targetPath = path.join(basePath, relPath);
 

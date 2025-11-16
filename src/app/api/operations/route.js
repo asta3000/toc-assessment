@@ -5,6 +5,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/libs/client";
 import cors from "@/libs/cors";
 import { posterror } from "@/libs/constants";
+import { operationSchema } from "@/libs/schemas";
 
 export const GET = async () => {
   try {
@@ -22,7 +23,21 @@ export const GET = async () => {
 export const POST = async (req) => {
   let data;
   try {
-    const { name, status, description } = await req.json();
+    const { name, status = "1", description } = await req.json();
+
+    const parsed = operationSchema?.safeParse({
+      name,
+      description,
+    });
+
+    if (!parsed?.success) {
+      const firstError = parsed?.error?.issues[0];
+      return NextResponse.json(
+        { message: firstError?.message },
+        { status: 302, headers: cors }
+      );
+    }
+
     data = {
       name,
       status,

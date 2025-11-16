@@ -5,6 +5,7 @@ import bcrypt from "bcryptjs";
 
 import { prisma } from "@/libs/client";
 import { autherror, authstatuserror } from "./libs/constants";
+import { loginSchema } from "./libs/schemas";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
@@ -16,52 +17,54 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
       async authorize(credentials) {
         try {
-          if (credentials) {
-            const user = await prisma.user.findUnique({
-              where: { email: credentials.email },
-            });
+          const parsed = loginSchema?.safeParse(credentials);
+          if (!parsed?.success) {
+            const firstError = parsed?.error?.issues[0];
+            throw new Error(firstError?.message);
+          }
 
-            if (!user) {
-              throw new Error(autherror);
-            } else if (user.status === "0") {
-              throw new Error(authstatuserror);
-            }
+          const user = await prisma.user.findUnique({
+            where: { email: credentials.email },
+          });
 
-            // Check whether passwords of user matched
-            const matchedPassword = await bcrypt.compare(
-              credentials.password,
-              user.password
-            );
+          if (!user) {
+            throw new Error(autherror);
+          } else if (user.status === "0") {
+            throw new Error(authstatuserror);
+          }
 
-            if (!matchedPassword) {
-              // Нууц үг буруу хийсэн оролдлого 5 хүрсэн бол эрхийг хаана. Үгүй бол оролдлогыг 1-ээр нэмнэ.
-              if (user.attempt >= 4) {
-                await prisma.user.update({
-                  where: { id: user.id },
-                  data: { status: "0" },
-                });
-              } else {
-                await prisma.user.update({
-                  where: { id: user.id },
-                  data: { attempt: user.attempt + 1 },
-                });
-              }
+          // Check whether passwords of user matched
+          const matchedPassword = await bcrypt.compare(
+            credentials.password,
+            user.password
+          );
 
-              throw new Error(autherror);
-            } else {
-              // Нууц үгийг зөв оруулбал оролдлогыг 0 болгоно.
+          if (!matchedPassword) {
+            // Нууц үг буруу хийсэн оролдлого 5 хүрсэн бол эрхийг хаана. Үгүй бол оролдлогыг 1-ээр нэмнэ.
+            if (user.attempt >= 4) {
               await prisma.user.update({
                 where: { id: user.id },
-                data: { attempt: 0 },
+                data: { status: "0" },
+              });
+            } else {
+              await prisma.user.update({
+                where: { id: user.id },
+                data: { attempt: user.attempt + 1 },
               });
             }
 
-            return user;
+            throw new Error(autherror);
+          } else {
+            // Нууц үгийг зөв оруулбал оролдлогыг 0 болгоно.
+            await prisma.user.update({
+              where: { id: user.id },
+              data: { attempt: 0 },
+            });
           }
 
-          throw new Error(autherror);
+          return user;
         } catch (error) {
-          console.log("CATCH: ", error);
+          console.log("E: ", error.message);
         }
       },
     }),

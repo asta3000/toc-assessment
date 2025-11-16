@@ -19,6 +19,7 @@ import { MyStatus } from "./MyText";
 import { FaArrowRight } from "react-icons/fa";
 import {
   ORGANIZATION,
+  organizationToC,
   STATUS_DONE,
   STATUS_FILLING,
   STATUS_NEW,
@@ -231,14 +232,16 @@ export const ListTable = (props) => {
                         handleClickDetail(data, props.setData, props.setModal)
                       }
                     />
-                    <PiPencilLineFill
-                      size={20}
-                      className="cursor-pointer"
-                      title={t("action.Edit")}
-                      onClick={() =>
-                        handleClickEdit(data, props.setData, props.setModal)
-                      }
-                    />
+                    {data?.id !== organizationToC && (
+                      <PiPencilLineFill
+                        size={20}
+                        className="cursor-pointer"
+                        title={t("action.Edit")}
+                        onClick={() =>
+                          handleClickEdit(data, props.setData, props.setModal)
+                        }
+                      />
+                    )}
                   </div>
                 </td>
               </tr>

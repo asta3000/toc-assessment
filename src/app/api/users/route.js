@@ -6,6 +6,7 @@ import bcrypt from "bcrypt";
 import { prisma } from "@/libs/client";
 import cors from "@/libs/cors";
 import { geterror, posterror } from "@/libs/constants";
+import { userRegisterSchema } from "@/libs/schemas";
 
 export const GET = async () => {
   try {
@@ -37,10 +38,33 @@ export const POST = async (req) => {
       gender,
       mobile,
       password,
+      confirmPassword,
+      role,
+      status = "1",
+      organizationId,
+    } = await req.json();
+
+    const parsed = userRegisterSchema?.safeParse({
+      firstname,
+      lastname,
+      email,
+      position,
+      gender,
+      mobile,
+      password,
+      confirmPassword,
       role,
       status,
       organizationId,
-    } = await req.json();
+    });
+
+    if (!parsed?.success) {
+      const firstError = parsed?.error?.issues[0];
+      return NextResponse.json(
+        { message: firstError?.message },
+        { status: 302, headers: cors }
+      );
+    }
 
     // Хэрэглэгч бүртгэлтэй эсэхийг шалгах
     const existingUser = await prisma.user.findUnique({

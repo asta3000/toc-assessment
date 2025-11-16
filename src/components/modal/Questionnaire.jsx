@@ -69,66 +69,102 @@ export const Questionnaire = (props) => {
         ) : // Бүртгэх үйлдэл
         props.action === "add" ? (
           metadata.type === "select" ? (
-            <WhiteSelect
-              name={metadata.field}
-              label={
-                system.language === "mn" ? metadata.name : metadata.name_en
-              }
-              value={props.data[metadata.field]}
-              key={index}
-              disabled={false}
-              selection={
-                metadata.selection ? metadata.selection : props.selection
-              }
-              setData={props.setData}
-              data={props.data}
-              metadata={metadata}
-            />
+            <div key={index}>
+              <WhiteSelect
+                name={metadata.field}
+                label={
+                  system.language === "mn" ? metadata.name : metadata.name_en
+                }
+                value={props.data[metadata.field]}
+                disabled={false}
+                selection={
+                  metadata.selection ? metadata.selection : props.selection
+                }
+                setData={props.setData}
+                data={props.data}
+                metadata={metadata}
+                validationError={props.validationErrors[metadata.field]}
+                activeSchema={props.activeSchema}
+                setErrors={props.setErrors}
+              />
+              {props.validationErrors[metadata.field] && (
+                <p className="text-xs text-red-500 mt-1 italic">
+                  {props.validationErrors[metadata.field]}
+                </p>
+              )}
+            </div>
           ) : (
-            <WhiteInput
-              name={metadata.field}
-              type={metadata.type}
-              label={
-                system.language === "mn" ? metadata.name : metadata.name_en
-              }
-              value={props.data[metadata.field]}
-              key={index}
-              disabled={false}
-              setData={props.setData}
-              data={props.data}
-            />
+            <div key={index}>
+              <WhiteInput
+                name={metadata.field}
+                type={metadata.type}
+                label={
+                  system.language === "mn" ? metadata.name : metadata.name_en
+                }
+                value={props.data[metadata.field]}
+                disabled={false}
+                setData={props.setData}
+                data={props.data}
+                validationError={props.validationErrors[metadata.field]}
+                activeSchema={props.activeSchema}
+                setErrors={props.setErrors}
+              />
+              {props.validationErrors[metadata.field] && (
+                <p className="text-xs text-red-500 mt-1 italic">
+                  {props.validationErrors[metadata.field]}
+                </p>
+              )}
+            </div>
           )
         ) : // Өөрчлөх үйлдэл
         props.action === "edit" ? (
           metadata.type === "select" ? (
-            <WhiteSelect
-              name={metadata.field}
-              label={
-                system.language === "mn" ? metadata.name : metadata.name_en
-              }
-              value={props.data[metadata.field]}
-              key={index}
-              disabled={false}
-              selection={
-                metadata.selection ? metadata.selection : props.selection
-              }
-              setData={props.setData}
-              data={props.data}
-              metadata={metadata}
-            />
+            <div key={index}>
+              <WhiteSelect
+                name={metadata.field}
+                label={
+                  system.language === "mn" ? metadata.name : metadata.name_en
+                }
+                value={props.data[metadata.field]}
+                disabled={false}
+                selection={
+                  metadata.selection ? metadata.selection : props.selection
+                }
+                setData={props.setData}
+                data={props.data}
+                metadata={metadata}
+                validationError={props.validationErrors[metadata.field]}
+                activeSchema={props.activeSchema}
+                setErrors={props.setErrors}
+              />
+              {props.validationErrors[metadata.field] && (
+                <p className="text-xs text-red-500 mt-1 italic">
+                  {props.validationErrors[metadata.field]}
+                </p>
+              )}
+            </div>
           ) : (
-            <WhiteInput
-              name={metadata.field}
-              type={metadata.type}
-              label={
-                system.language === "mn" ? metadata.name : metadata.name_en
-              }
-              value={props.data[metadata.field]}
-              key={index}
-              disabled={false}
-              setData={props.setData}
-              data={props.data}
-            />
+            <div key={index}>
+              <WhiteInput
+                name={metadata.field}
+                type={metadata.type}
+                label={
+                  system.language === "mn" ? metadata.name : metadata.name_en
+                }
+                value={props.data[metadata.field]}
+                disabled={false}
+                setData={props.setData}
+                data={props.data}
+                validationError={props.validationErrors[metadata.field]}
+                activeSchema={props.activeSchema}
+                setErrors={props.setErrors}
+              />
+              {props.validationErrors[metadata.field] && (
+                <p className="text-xs text-red-500 mt-1 italic">
+                  {props.validationErrors[metadata.field]}
+                </p>
+              )}
+            </div>
           )
         ) : null;
       })}
@@ -143,17 +179,27 @@ export const Questionnaire = (props) => {
             }
           />
         ) : (
-          <WhiteInput
-            name={condition.field}
-            type={condition.type}
-            label={
-              system.language === "mn" ? condition.name : condition.name_en
-            }
-            value={props.data[condition.field]}
-            disabled={false}
-            setData={props.setData}
-            data={props.data}
-          />
+          <div>
+            <WhiteInput
+              name={condition.field}
+              type={condition.type}
+              label={
+                system.language === "mn" ? condition.name : condition.name_en
+              }
+              value={props.data[condition.field]}
+              disabled={false}
+              setData={props.setData}
+              data={props.data}
+              validationError={props.validationErrors[condition.field]}
+              activeSchema={props.activeSchema}
+              setErrors={props.setErrors}
+            />
+            {props.validationErrors[condition.field] && (
+              <p className="text-xs text-red-500 mt-1 italic">
+                {props.validationErrors[condition.field]}
+              </p>
+            )}
+          </div>
         ))}
 
       {/* Radio эсвэл Checkbox асуултын төрлийн үед нэмэлт асуулт гаргаж байна. */}
