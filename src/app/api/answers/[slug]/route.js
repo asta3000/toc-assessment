@@ -10,25 +10,70 @@ import { CHECKBOX, puterror, RADIO, TEXT } from "@/libs/constants";
 export const PUT = async (req) => {
   try {
     const { answer, optionAnswer } = await req.json();
-    // console.log(answer, optionAnswer);
+    // console.log("PUT: ", answer, optionAnswer);
 
     await prisma.$transaction(async (tx) => {
       if (answer.answerTypeId === RADIO) {
         const descriptions = answer?.descriptions?.filter(
-          (a) => a && a.id && a.subQuestionId
+          (d) => d && d.subQuestionId && !lodash.isEmpty(d.description)
         );
 
         const options = optionAnswer?.options?.filter(
           (a) => a && a.id && a.optionId
         );
 
+        for (const d of descriptions) {
+          if (d.id) {
+            await tx.answer.update({
+              where: { id: d.id },
+              data: {
+                description: d.description ?? null,
+                subQuestionId: d.subQuestionId,
+                isVerified: false,
+                comment: null,
+              },
+            });
+          } else {
+            await tx.answer.create({
+              data: {
+                organizationId: answer.organizationId,
+                yearId: answer.yearId,
+                assessmentId: answer.assessmentId,
+                moduleId: answer.moduleId,
+                userId: answer.userId,
+                questionId: answer.questionId,
+                answerTypeId: answer.answerTypeId,
+                description: d.description ?? null,
+                subQuestionId: d.subQuestionId,
+                isVerified: false,
+                comment: null,
+              },
+            });
+          }
+        }
+
+        for (const a of options) {
+          await tx.optionAnswer.update({
+            where: { id: a.id },
+            data: {
+              description: a.description,
+              optionId: a.optionId,
+              score_user: a.score_user,
+              score_verify: a.score_user,
+            },
+          });
+        }
+      } else if (answer.answerTypeId === CHECKBOX) {
+        const descriptions = answer?.descriptions?.filter(
+          (a) => a && a.subQuestionId && !lodash.isEmpty(a.description)
+        );
+
         for (const a of descriptions) {
-          // console.log("Answer: ", a);
           if (a.id) {
             await tx.answer.update({
               where: { id: a.id },
               data: {
-                description: a.description ?? null,
+                description: a.description,
                 subQuestionId: a.subQuestionId,
                 isVerified: false,
                 comment: null,
@@ -44,43 +89,13 @@ export const PUT = async (req) => {
                 userId: answer.userId,
                 questionId: answer.questionId,
                 answerTypeId: answer.answerTypeId,
-                description: a.description ?? null,
+                description: a.description,
                 subQuestionId: a.subQuestionId,
                 isVerified: false,
                 comment: null,
               },
             });
           }
-        }
-
-        for (const a of options) {
-          // console.log("Option answer: ", a);
-          await tx.optionAnswer.update({
-            where: { id: a.id },
-            data: {
-              description: a.description,
-              optionId: a.optionId,
-              score_user: a.score_user,
-              score_verify: a.score_user,
-            },
-          });
-        }
-      } else if (answer.answerTypeId === CHECKBOX) {
-        const descriptions = answer?.descriptions?.filter(
-          (a) => a && a.id && a.subQuestionId
-        );
-
-        for (const a of descriptions) {
-          // console.log("Answer: ", a);
-          await tx.answer.update({
-            where: { id: a.id },
-            data: {
-              description: a.description,
-              subQuestionId: a.subQuestionId,
-              isVerified: false,
-              comment: null,
-            },
-          });
         }
 
         // Баазад байгаа бүх хариултыг устгана. Учир нь энэ optionAnswer дээр uncheck хийсэн мэдээлэл ирэхгүй байгаа. Тиймээс давхардал үүсэхээс сэргийлж устгана.

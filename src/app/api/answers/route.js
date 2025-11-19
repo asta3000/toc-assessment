@@ -1,6 +1,7 @@
 "use server";
 
 import { NextResponse } from "next/server";
+import lodash from "lodash";
 
 import { prisma } from "@/libs/client";
 import cors from "@/libs/cors";
@@ -16,13 +17,13 @@ import {
 export const POST = async (req) => {
   try {
     const { answer, optionAnswer } = await req.json();
-    // console.log("ROUTE: ", answer, optionAnswer);
+    // console.log("POST: ", answer, optionAnswer);
 
     await prisma.$transaction(async (tx) => {
       if (answer.answerTypeId === RADIO) {
         if (answer?.descriptions?.length > 0) {
           const rows = answer.descriptions
-            .filter((d) => d && d.subQuestionId)
+            .filter((d) => d.subQuestionId && !lodash.isEmpty(d.description))
             .map((d) => ({
               organizationId: answer.organizationId,
               yearId: answer.yearId,

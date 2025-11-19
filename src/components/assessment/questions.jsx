@@ -22,8 +22,12 @@ const Questions = (props) => {
   const disabled = [STATUS_SENT].includes(assessment?.statusId);
   const t = useTranslation();
   // console.log(disabled);
+
+  // Нийт хариултын тоог гаргах
   const answers =
     props.answerCount?.reduce((c, el) => c + (el.count ?? 0), 0) ?? 0;
+
+  // Нийт асуултын тоог гаргах
   const questions =
     props.questions?.reduce((c, el) => c + (el.count ?? 0), 0) ?? 0;
 
@@ -34,18 +38,22 @@ const Questions = (props) => {
     answerTypeId,
     questionId
   ) => {
+    // Асуулт нь өөр бол шууд бааз руу хадгалалт хийгээд state-ийг суллах
     if (
       !lodash.isEmpty(props.answer.questionId) &&
       props.answer.questionId !== questionId
     ) {
+      // Асуулт нь өөр бол шууд бааз руу хадгалалт хийгээд state-ийг суллах
       const savedAnswers1 = props.savedAnswers?.answers
         ?.filter((a) => a.questionId === props.answer?.questionId)
         ?.map((a) => a.id);
 
+      // Өмнө хариулагдсан хувилбар байгаа эсэхийг шалгаж байна.
       const savedOptionAnswers = props.savedAnswers?.optionAnswers
         ?.filter((a) => a.questionId === props.optionAnswer?.questionId)
         ?.map((a) => a.id);
 
+      // Хариулагдаж байсан бол хариултыг өөрчилнө, хариулагдаж байгаагүй бол хариултыг бүртгэнэ.
       savedOptionAnswers.length > 0 || savedAnswers1.length > 0
         ? await DataEditorBySlug("/answers", {
             answer: props.answer,
@@ -56,6 +64,7 @@ const Questions = (props) => {
             optionAnswer: props.optionAnswer,
           });
 
+      // Хариултын хувилбарыг цэвэрлэнэ.
       props.setOptionAnswer({
         organizationId: user?.organizationId,
         yearId: system?.yearId,
@@ -68,6 +77,7 @@ const Questions = (props) => {
         options: [],
       });
 
+      // Хариултыг цэвэрлэнэ.
       props.setAnswer({
         organizationId: user?.organizationId,
         yearId: system?.yearId,
@@ -79,10 +89,12 @@ const Questions = (props) => {
         descriptions: [],
       });
 
+      // Хариултуудыг өгөгдлийн сангаас дахин авах
       props.getData();
     }
 
     props.setAnswer((prev) => {
+      // prev.descriptions нь массив мөн эсэхийг шалгана.
       const stateDesc = Array.isArray(prev.descriptions)
         ? prev.descriptions
         : [];
@@ -129,7 +141,6 @@ const Questions = (props) => {
           updatedDescriptions = [
             ...base,
             {
-              id: base[0]?.id,
               subQuestionId: event.target.name,
               description: event.target.value,
             },
@@ -171,23 +182,12 @@ const Questions = (props) => {
     });
 
     props.setOptionAnswer((prev) => {
-      let options;
+      // let options;
 
       if (prev.options?.length === 0) {
-        const option = props.savedAnswers?.optionAnswers?.find(
+        const options = props.savedAnswers?.optionAnswers?.filter(
           (a) => a.questionId === questionId
         );
-
-        if (answerTypeId === RADIO) {
-          options = [
-            {
-              id: option?.id,
-              optionId: option?.optionId,
-              score_user: option?.score_user ?? 0,
-              description: option?.description ?? null,
-            },
-          ];
-        }
 
         return {
           ...prev,
@@ -219,14 +219,17 @@ const Questions = (props) => {
       !lodash.isEmpty(props.optionAnswer.questionId) &&
       props.optionAnswer.questionId !== questionId
     ) {
+      // Өмнө нь хариулагдсан эсэхийг шалгаж байна.
       const savedAnswers1 = props.savedAnswers?.answers
         ?.filter((a) => a.questionId === props.answer?.questionId)
         ?.map((a) => a.id);
 
+      // Өмнө хариулагдсан хувилбар байгаа эсэхийг шалгаж байна.
       const savedOptionAnswers = props.savedAnswers?.optionAnswers
         ?.filter((a) => a.questionId === props.optionAnswer?.questionId)
         ?.map((a) => a.id);
 
+      // Хариулагдаж байсан бол хариултыг өөрчилнө, хариулагдаж байгаагүй бол хариултыг бүртгэнэ.
       savedOptionAnswers.length > 0 || savedAnswers1.length > 0
         ? await DataEditorBySlug("/answers", {
             answer: props.answer,
@@ -237,6 +240,7 @@ const Questions = (props) => {
             optionAnswer: props.optionAnswer,
           });
 
+      // Хариултын хувилбарыг цэвэрлэнэ.
       props.setOptionAnswer({
         organizationId: user?.organizationId,
         yearId: system?.yearId,
@@ -249,6 +253,7 @@ const Questions = (props) => {
         options: [],
       });
 
+      // Хариултыг цэвэрлэнэ.
       props.setAnswer({
         organizationId: user?.organizationId,
         yearId: system?.yearId,
@@ -260,6 +265,7 @@ const Questions = (props) => {
         descriptions: [],
       });
 
+      // Хариултуудыг өгөгдлийн сангаас дахин авна.
       props.getData();
     }
 
@@ -291,8 +297,13 @@ const Questions = (props) => {
 
     // Сонголтот хариулт бөглөх
     props.setOptionAnswer((prev) => {
+      // prev.options нь массив эсэхийг шалгана. Тийм бол тухайн хариуг хадгалж авна.
       const existing = Array.isArray(prev.options) ? prev.options : [];
-      const optionId = option?.id ?? event.target.value; // radio дээр option.id ирж байгаа бол checkbox дээр option.score_user ирж байгаа. Иймд option.id-г давуу сонголт болгов.
+
+      // radio дээр option.id ирж байгаа бол checkbox дээр option.score_user ирж байгаа. Иймд option.id-г давуу сонголт болгов.
+      const optionId = option?.id ?? event.target.value;
+
+      // Checkbox-ийн хувьд тухайн хувилбар хариулагдсан эсэхийг тодорхойлж байна.
       const checked = !!event.target.checked;
 
       // Өгөгдлийн сангаас тухайн асуултын хариултуудыг авч байна.

@@ -24,7 +24,7 @@
     "name": "Файлын сан",
     "name_en": "File library",
     "link": "/files",
-    "status": true,
+    "status": false,
     "role": ["ADMIN"]
   },
   {

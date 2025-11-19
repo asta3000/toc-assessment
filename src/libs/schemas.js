@@ -98,7 +98,7 @@ export const userBaseSchema = z.object({
   mobile: z
     .string({ error: "Утасны дугаарыг оруулна уу" })
     .trim()
-    .min(8, "Утасны дугаарын урт багадаа 2 үсэгтэй байна"),
+    .min(8, "Утасны дугаарын урт багадаа 8 үсэгтэй байна"),
   role: z
     .string({ error: "Үүргийг сонгоно уу" })
     .trim()

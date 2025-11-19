@@ -10,6 +10,8 @@ import {
   STATUS_DONE,
   STATUS_SENT,
   STATUS_VERIFIED,
+  TEXT,
+  toastperiod,
 } from "@/libs/constants";
 import { useAssessmentStore } from "@/stores/storeAssessment";
 import { useSystemStore } from "@/stores/storeSystem";
@@ -88,6 +90,7 @@ const Organization = () => {
     options: [],
   });
 
+  // Хариултын статистик харуулах мэдээллийг авах
   const getAnswerCount = async () => {
     if (shouldFetch) {
       const data = {
@@ -104,6 +107,7 @@ const Organization = () => {
     }
   };
 
+  // Хариултуудыг авах
   const getData = async () => {
     await instance
       .post("/answers/get", {
@@ -153,9 +157,9 @@ const Organization = () => {
   }, [allDatas]);
 
   const handleChangeModule = (module) => {
-    if (optionAnswer.options.length > 0 || answer.descriptions.length > 0) {
+    if (optionAnswer?.options?.length > 0 || answer?.descriptions?.length > 0) {
       toast.error("Сүүлийн хариултыг хадгалаагүй байна.", {
-        duration: 2000,
+        duration: toastperiod,
         position: "top-right",
         className: "bg-red-400 text-white",
         style: {
@@ -172,12 +176,24 @@ const Organization = () => {
 
     // Хариулт бөглөсөн эсэхийг шалгах. Бөглөсөн бол 0-с их байна.
     // Нэмэлт асуултгүй асуултын хувьд descriptions хоосон байж болно. Тиймээс || тэмдэгээр аль нэг нь биелэхийг шалгана.
-    if (answer.descriptions?.length > 0 || optionAnswer.options?.length > 0) {
-      const descriptions = answer.descriptions;
-      const options = optionAnswer.options;
+    const descriptions = answer.descriptions;
+    const options = optionAnswer.options;
 
-      // Өөрчлөлт үү, шинэ хариулт уу гэдгийг шалгана. id хоосон бол шинэ, биш бол өөрчлөлт
-      if (
+    if (descriptions?.length > 0 || options?.length > 0) {
+      // Текст хариулттай асуулт бол зөвхөн answer-н утгыг дамжуулна.
+      // Бусад хариулттай асуулт бол answer, optionAnswer-г хамтад нь дамжуулна.
+      if (answer?.answerTypeId === TEXT) {
+        if (lodash.isEmpty(descriptions[0]?.id)) {
+          await DataRegister("/answers", {
+            answer,
+          });
+        } else {
+          await DataEditorBySlug("/answers", {
+            answer,
+          });
+        }
+      } else if (
+        // Өөрчлөлт үү, шинэ хариулт уу гэдгийг шалгана. id хоосон бол шинэ, биш бол өөрчлөлт
         lodash.isEmpty(descriptions[0]?.id) &&
         lodash.isEmpty(options[0]?.id)
       ) {
@@ -234,7 +250,7 @@ const Organization = () => {
         .then(async (result) => {
           if (result.status === 200) {
             toast.success("Үнэлгээ илгээгдлээ.", {
-              duration: 2000,
+              duration: toastperiod,
               position: "top-right",
               className: "bg-green-400 text-white",
               style: {
@@ -251,7 +267,7 @@ const Organization = () => {
               .then((result) => {
                 if (result.status === 200) {
                   toast.success("Автомат мэдэгдэл илгээгдлээ.", {
-                    duration: 2000,
+                    duration: toastperiod,
                     position: "top-right",
                     className: "bg-green-400 text-white",
                     style: {
@@ -262,7 +278,7 @@ const Organization = () => {
                   toast.error(
                     "Автомат мэдэгдэл илгээгдсэнгүй. Та гараар мэдэгдэнэ үү.",
                     {
-                      duration: 2000,
+                      duration: toastperiod,
                       position: "top-right",
                       className: "bg-red-400 text-white",
                       style: {
@@ -277,7 +293,7 @@ const Organization = () => {
                 toast.error(
                   "Автомат мэдэгдэл илгээгдсэнгүй. Та гараар мэдэгдэнэ үү.",
                   {
-                    duration: 2000,
+                    duration: toastperiod,
                     position: "top-right",
                     className: "bg-red-400 text-white",
                     style: {
@@ -288,7 +304,7 @@ const Organization = () => {
               });
           } else {
             toast.error("Үнэлгээ илгээхэд алдаа гарлаа.", {
-              duration: 2000,
+              duration: toastperiod,
               position: "top-right",
               className: "bg-red-400 text-white",
               style: {
@@ -300,7 +316,7 @@ const Organization = () => {
         .catch((error) => {
           console.log("ERROR: ", error);
           toast.error("Үнэлгээ илгээхэд алдаа гарлаа.", {
-            duration: 2000,
+            duration: toastperiod,
             position: "top-right",
             className: "bg-red-400 text-white",
             style: {
@@ -312,7 +328,7 @@ const Organization = () => {
       redirect("/assessments");
     } else {
       toast.error("Бүх асуултыг хариулаагүй байна.", {
-        duration: 2000,
+        duration: toastperiod,
         position: "top-right",
         className: "bg-red-400 text-white",
         style: {
@@ -330,8 +346,8 @@ const Organization = () => {
     console.error(error);
   }
 
-  // console.log("Answer: ", props.answer);
-  // console.log("Answer Option: ", props.optionAnswer);
+  // console.log("Answer: ", answer);
+  // console.log("Answer Option: ", optionAnswer);
   // console.log("Saved: ", savedAnswers);
   // console.log("All: ", allDatas);
   // console.log("Ass: ", assessment);

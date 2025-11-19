@@ -268,6 +268,7 @@ export const QuestionnaireOptions = (props) => {
   // Үнэлгээний төлвийг хараад шинэ, эсвэл бөглөж буйгаас бусад төлөвт байвал унших горимд шилжинэ.
   const disabled = ![STATUS_NEW, STATUS_FILLING].includes(assessment?.statusId);
   const questionId = props.data?.id;
+  const answerTypeId = props.data?.answerTypeId;
 
   // Checkbox-ийн хувьд тухайн асуултын хариулт нь state-д байвал state дэх options-ийн id утгуудаар Set үүсгэж байна.
   const stateSet = useMemo(() => {
@@ -288,14 +289,7 @@ export const QuestionnaireOptions = (props) => {
     );
   }, [props.savedAnswers?.optionAnswers, questionId]);
 
-  const radio = (
-    options,
-    subQuestions,
-    handleChangeAnswer,
-    answerTypeId,
-    handleChangeOptionAnswer,
-    questionId
-  ) => {
+  const radio = () => {
     // Тухайн асуултын хариулт нь state дэх хариулттай таарч байвал түүний options доторх ID утгыг авна.
     const selectedState =
       props.optionAnswer?.questionId === questionId
@@ -326,23 +320,23 @@ export const QuestionnaireOptions = (props) => {
 
     return (
       <Fragment>
-        {options?.map((option) => {
+        {props.options?.map((option) => {
           return (
             <div className="my-2" key={option.id}>
               <input
                 type="radio"
-                name={props.data?.id} // Асуултын дугаар
+                name={questionId} // Асуултын дугаар
                 value={option.id} // Хувилбарын дугаар
                 checked={option.id === selected} // Хувилбарын дугаар нь сонгосонтой таарч байвал true байна.
                 className="mr-2"
                 disabled={disabled} // Үнэлгээний төлөвөөс хамаарч унших горимд шилжих
                 onChange={(event) =>
-                  handleChangeOptionAnswer(
+                  props.handleChangeOptionAnswer(
                     event,
                     null,
                     null,
                     answerTypeId,
-                    props.data.id,
+                    questionId,
                     props.data,
                     option
                   )
@@ -358,19 +352,16 @@ export const QuestionnaireOptions = (props) => {
         {/* Асуултын нэмэлт асуултууд (хэрэглэгчийн хариулт шаардлагыг хангавал харагдана) */}
         {isCondition && (
           <div className="mt-5">
-            {subQuestions?.map((question) => {
+            {props.subQuestions?.map((question) => {
               // Тухайн асуултын нэмэлт асуултын хариулт нь state-д байгаа эсэхийг шалгаад, байвал тэр хариултыг авна.
               const stateDesc = props.answer?.descriptions?.find(
-                (d) =>
-                  d.subQuestionId === question.id &&
-                  d.subQuestionId === question.id
+                (d) => d.subQuestionId === question.id
               )?.description;
 
               // Тухайн асуултын нэмэлт асуултын хариулт нь DB-д байгаа эсэхийг шалгаад, байвал тэр хариултыг авна.
               const savedDesc = props.savedAnswers?.answers?.find(
                 (a) =>
-                  a.questionId === props.data.id &&
-                  a.subQuestionId === question.id
+                  a.questionId === questionId && a.subQuestionId === question.id
               )?.description;
 
               return (
@@ -385,9 +376,9 @@ export const QuestionnaireOptions = (props) => {
                     name={question.id}
                     value={stateDesc ?? savedDesc ?? ""}
                     className="mr-2"
-                    handleChangeValue={handleChangeAnswer}
+                    handleChangeValue={props.handleChangeAnswer}
                     answerTypeId={answerTypeId}
-                    questionId={props.data.id}
+                    questionId={questionId}
                     readOnly={disabled} // Үнэлгээний төлөвөөс хамаарч унших горимд шилжих
                   />
                 </div>
@@ -399,14 +390,7 @@ export const QuestionnaireOptions = (props) => {
     );
   };
 
-  const checkbox = (
-    options,
-    subQuestions,
-    handleChangeAnswer,
-    answerTypeId,
-    handleChangeOptionAnswer,
-    questionId
-  ) => {
+  const checkbox = () => {
     // Хэрэглэгч тухайн хариултын state-тай харьцсан эсэхийг шалгах
     const touched = props.optionAnswer?.questionId === questionId;
     // console.log("CHECKBOX: ", stateSet, savedSet, touched);
@@ -429,13 +413,12 @@ export const QuestionnaireOptions = (props) => {
         (a) => a.questionId === questionId && a.optionId === optionId
       )?.description;
 
-      // console.log("DESC: ", stateDesc, savedDesc);
-      return stateDesc ?? savedDesc ?? "";
+      return stateDesc ?? savedDesc;
     };
 
     return (
       <Fragment>
-        {options?.map((option) => {
+        {props.options?.map((option) => {
           // Тухайн хариултын хувилбар чек хийгдсэн эсэхийг шалгаж байна
           const checked = isChecked(option.id);
 
@@ -456,12 +439,12 @@ export const QuestionnaireOptions = (props) => {
                     className="mr-2"
                     disabled={disabled} // Үнэлгээний төлөвөөс хамаарч унших горимд шилжих
                     onChange={(event) =>
-                      handleChangeOptionAnswer(
+                      props.handleChangeOptionAnswer(
                         event,
                         null,
                         "check",
                         answerTypeId,
-                        props.data.id,
+                        questionId,
                         props.data,
                         option
                       )
@@ -484,9 +467,9 @@ export const QuestionnaireOptions = (props) => {
                       name={option.id}
                       value={descriptionValue(option.id)}
                       className="mr-2"
-                      handleChangeValue={handleChangeOptionAnswer}
+                      handleChangeValue={props.handleChangeAnswer}
                       answerTypeId={answerTypeId}
-                      questionId={props.data.id}
+                      questionId={questionId}
                       action="description"
                       question={props.data}
                       option={option}
@@ -501,18 +484,19 @@ export const QuestionnaireOptions = (props) => {
 
         {/* Нэмэлт дэд асуултууд (checkbox-д шууд харуулна) */}
         <div className="mt-5">
-          {subQuestions?.map((question) => {
+          {props.subQuestions?.map((question) => {
             // Тухайн дэд асуултын хариулт нь State-д байвал хариултыг авна
             const stateDesc = props.answer?.descriptions?.find(
-              (d) => d.id === question.id && d.subQuestionId === question.id
+              (d) => d.subQuestionId === question.id
             )?.description;
 
             // Тухайн дэд асуултын хариулт нь Өгөгдлийн санд байвал хариултыг авна
             const savedDesc = props.savedAnswers?.answers?.find(
               (a) =>
-                a.questionId === props.data.id &&
-                a.subQuestionId === question.id
+                a.questionId === questionId && a.subQuestionId === question.id
             )?.description;
+
+            // console.log("D: ", stateDesc, savedDesc);
 
             return (
               <div className="my-2" key={question.id}>
@@ -527,9 +511,9 @@ export const QuestionnaireOptions = (props) => {
                   value={stateDesc ?? savedDesc ?? ""}
                   className="mr-2"
                   readOnly={disabled} // Үнэлгээний төлөвөөс хамаарч унших горимд шилжих
-                  handleChangeValue={handleChangeAnswer}
+                  handleChangeValue={props.handleChangeAnswer}
                   answerTypeId={answerTypeId}
-                  questionId={props.data.id}
+                  questionId={questionId}
                 />
               </div>
             );
@@ -539,25 +523,28 @@ export const QuestionnaireOptions = (props) => {
     );
   };
 
-  const text = (handleChangeAnswer, answerTypeId) => {
+  const text = () => {
+    // Дэд асуулт гэсэн утга байхгүй бол текст хариулттай асуулт гэж үзэж түүнийг шалгана.
+    const stateDesc = props.answer?.descriptions?.find(
+      (d) => d.subQuestionId === undefined
+    )?.description;
+
+    // Өгөгдлийн сангаас тухайн асуултны хариултыг авна
+    const savedDesc =
+      props.savedAnswers?.answers?.find((a) => a.questionId === questionId)
+        ?.description ?? "";
     return (
       <div className="my-2">
         <CustomInput
           type="text"
           label={null} // Асуулт нь өөрөө label болох тул хоосон оруулав.
           name={null}
-          value={
-            props.answer?.descriptions[0]?.description ??
-            props.savedAnswers?.answers?.find(
-              (a) => a.questionId === props.data.id
-            )?.description ??
-            ""
-          }
+          value={stateDesc ?? savedDesc}
           className="mr-2"
-          handleChangeValue={handleChangeAnswer}
+          handleChangeValue={props.handleChangeAnswer}
           index={undefined} // Энэ утга хоосон дамжих ёстой.
           answerTypeId={answerTypeId}
-          questionId={props.data.id}
+          questionId={questionId}
           readOnly={disabled} // Үнэлгээний төлөвөөс хамаарч унших горимд шилжих
         />
       </div>
@@ -566,29 +553,12 @@ export const QuestionnaireOptions = (props) => {
 
   return (
     <div className="ml-3 mt-3">
-      {props.data?.answerTypeId === TEXT &&
-        text(props.handleChangeAnswer, props.data?.answerTypeId)}
-      {props.data?.answerTypeId === RADIO &&
-        radio(
-          props.options,
-          props.subQuestions,
-          props.handleChangeAnswer,
-          props.data?.answerTypeId,
-          props.handleChangeOptionAnswer,
-          props.data?.id
-        )}
-      {props.data?.answerTypeId === CHECKBOX &&
-        checkbox(
-          props.options,
-          props.subQuestions,
-          props.handleChangeAnswer,
-          props.data?.answerTypeId,
-          props.handleChangeOptionAnswer,
-          props.data?.id
-        )}
+      {props.data?.answerTypeId === TEXT && text()}
+      {props.data?.answerTypeId === RADIO && radio()}
+      {props.data?.answerTypeId === CHECKBOX && checkbox()}
       {props.attachment?.value !== "0" && (
         <CustomInput
-          name={props.data.id}
+          name={questionId}
           type="file"
           label={t("assessment.Attachment")}
           multiple={true}

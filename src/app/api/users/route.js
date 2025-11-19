@@ -5,7 +5,7 @@ import bcrypt from "bcrypt";
 
 import { prisma } from "@/libs/client";
 import cors from "@/libs/cors";
-import { geterror, posterror } from "@/libs/constants";
+import { geterror, organizationToC, posterror } from "@/libs/constants";
 import { userRegisterSchema } from "@/libs/schemas";
 
 export const GET = async () => {
@@ -84,7 +84,7 @@ export const POST = async (req) => {
       where: { organizationId },
     });
 
-    if (countUser.length >= 3) {
+    if (countUser.length >= 3 && organizationId !== organizationToC) {
       return NextResponse.json(
         {
           message: "Бүртгэлтэй хэрэглэгчийн тоо хангалттай байна.",
