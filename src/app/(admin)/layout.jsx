@@ -3,6 +3,7 @@ import "@/styles/spinner.css";
 
 import { AdminBar, AdminSubBar } from "@/components/MyBar";
 import ChangeLanguage from "@/components/ChangeLanguage";
+import GoToTop from "@/components/GoToTop";
 
 export const metadata = {
   title: process.env.WEB_TITLE,
@@ -16,6 +17,7 @@ export default function AdminLayout({ children }) {
         <AdminBar />
         <AdminSubBar />
         {children}
+        <GoToTop />
         <ChangeLanguage />
       </body>
     </html>

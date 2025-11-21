@@ -144,5 +144,8 @@
     "organizationScore": "Байгууллагын оноо",
     "answerOption": "Хариултын хувилбар",
     "comment": "Баталгаажуулагчийн тэмдэглэл"
+  },
+  "dashboard": {
+    "Status": "Төлөв"
   }
 }

@@ -144,5 +144,8 @@
     "organizationScore": "Organization Score",
     "answerOption": "Answer Option",
     "comment": "Verifier's comment"
+  },
+  "dashboard": {
+    "Status": "Status"
   }
 }

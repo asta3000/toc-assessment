@@ -421,8 +421,6 @@ export const QuestionnaireOptions = (props) => {
         {props.options?.map((option) => {
           // Тухайн хариултын хувилбар чек хийгдсэн эсэхийг шалгаж байна
           const checked = isChecked(option.id);
-
-          // console.log("TEXT: ", disabled, !checked);
           return (
             <div className={clsx("my-2")} key={option.id}>
               <div className="flex justify-between items-center">
@@ -467,7 +465,7 @@ export const QuestionnaireOptions = (props) => {
                       name={option.id}
                       value={descriptionValue(option.id)}
                       className="mr-2"
-                      handleChangeValue={props.handleChangeAnswer}
+                      handleChangeValue={props.handleChangeOptionAnswer}
                       answerTypeId={answerTypeId}
                       questionId={questionId}
                       action="description"

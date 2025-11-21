@@ -6,6 +6,7 @@ import { headers } from "next/headers";
 
 import ChangeLanguage from "@/components/ChangeLanguage";
 import { UserBar } from "@/components/MyBar";
+import GoToTop from "@/components/GoToTop";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -25,7 +26,7 @@ export const metadata = {
 export default async function RootLayout({ children }) {
   const path = await headers();
   const pathname = path.get("x-invoke-path") || "";
-  console.log(pathname);
+  // console.log(pathname);
   const hideUserBar = pathname === "/";
 
   return (
@@ -33,6 +34,7 @@ export default async function RootLayout({ children }) {
       <body className="h-screen w-screen antialiased caret-transparent">
         {!hideUserBar && <UserBar />}
         {children}
+        <GoToTop />
         <ChangeLanguage />
       </body>
     </html>
