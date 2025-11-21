@@ -5,8 +5,9 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/libs/client";
 import cors from "@/libs/cors";
 import { geterror } from "@/libs/constants";
-import { forEach } from "lodash";
 
+// Байгууллагын dashboard-д зориулагдсан.
+// Байгууллага нь тухайн жил бүх үнэлгээнүүдэд хэрхэн оролцсонг харах зорилготой.
 export const GET = async (req, { params }) => {
   const { slug } = await params;
   try {

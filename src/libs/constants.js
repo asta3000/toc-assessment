@@ -10,6 +10,8 @@ export const textgreen = "text-[#78AA42]";
 export const borderblue = "border-[#1C4792]";
 export const bordergreen = "border-[#78AA42]";
 
+export const chartFontSize = 12;
+
 export const url = "/api";
 
 export const ADMIN = "ADMIN";
