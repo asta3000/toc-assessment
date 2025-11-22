@@ -1,12 +1,11 @@
 "use client";
 
 import { useTranslation } from "@/hooks/useTranslation";
-import { bgblue, borderblue, blue } from "@/libs/constants";
+import { bgblue, borderblue, blue, textblue } from "@/libs/constants";
 import { useSystemStore } from "@/stores/storeSystem";
 import clsx from "clsx";
 import { FaChevronUp } from "react-icons/fa";
 
-import Image from "next/image";
 import React from "react";
 
 const GoToTop = () => {

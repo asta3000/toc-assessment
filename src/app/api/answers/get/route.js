@@ -31,6 +31,11 @@ export const POST = async (req) => {
       }),
     ]);
 
+    // console.log(
+    //   "O: ",
+    //   optionAnswers?.filter((o) => o.questionId === "690431e2b985c575e33967d6")
+    // );
+
     return NextResponse.json(
       { answers, optionAnswers },
       { status: 200, headers: cors }

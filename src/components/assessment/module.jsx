@@ -1,18 +1,29 @@
 "use client";
 
-import { STATUS_SENT, textblue } from "@/libs/constants";
+import {
+  STATUS_DONE,
+  STATUS_SENT,
+  STATUS_VERIFIED,
+  STATUS_VERIFYING,
+  textblue,
+} from "@/libs/constants";
 import clsx from "clsx";
 import React from "react";
 import { SolidButton } from "../MyButton";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useAssessmentStore } from "@/stores/storeAssessment";
-import PieDefault from "../charts/Pie";
+import PieDefault from "@/components/charts/Pie";
 
 const Module = (props) => {
   // console.log("Module props:", props);
   const t = useTranslation();
   const { assessment } = useAssessmentStore();
-  const disabled = [STATUS_SENT].includes(assessment?.statusId);
+  const disabled = [
+    STATUS_SENT,
+    STATUS_VERIFYING,
+    STATUS_VERIFIED,
+    STATUS_DONE,
+  ].includes(assessment?.statusId);
   const answers =
     props.answerCount?.reduce((c, el) => c + (el.count ?? 0), 0) ?? 0;
   const questions =

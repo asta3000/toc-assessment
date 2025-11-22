@@ -8,10 +8,10 @@ import { fetcher, instance } from "@/libs/client";
 import { useSystemStore } from "@/stores/storeSystem";
 import { useUserStore } from "@/stores/storeUser";
 import { useVerificationStore } from "@/stores/storeVerification";
-import { STATUS_VERIFIED } from "@/libs/constants";
+import { STATUS_VERIFIED, toastperiod } from "@/libs/constants";
 
 import lodash from "lodash";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useMemo, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import useSWR from "swr";
@@ -70,7 +70,7 @@ const Verification = () => {
   });
 
   const [optionAnswer, setOptionAnswer] = useState({
-    organizationId: user?.organizationId,
+    organizationId: verification?.organizationId,
     yearId: system?.yearId,
     assessmentId: verification?.assessmentId,
     moduleId: module?.id,
@@ -78,6 +78,7 @@ const Verification = () => {
     options: [],
   });
 
+  // Баталгаажилтийн статистик авах
   const getVerificationCount = async () => {
     if (shouldFetch) {
       const data = {
@@ -94,6 +95,7 @@ const Verification = () => {
     }
   };
 
+  // Байгууллагын хариултыг авах
   const getData = async () => {
     await instance
       .post("/answers/get", {
@@ -154,10 +156,12 @@ const Verification = () => {
     }
   };
 
-  const questions = allDatas[5]?.reduce((c, el) => c + (el.count ?? 0), 0) ?? 0;
-  const verifications =
-    verificationCount?.reduce((c, el) => c + (el.count ?? 0), 0) ?? 0;
+  // const questions = allDatas[5]?.reduce((c, el) => c + (el.count ?? 0), 0) ?? 0;
+  // const verifications =
+  //   verificationCount?.reduce((c, el) => c + (el.count ?? 0), 0) ?? 0;
 
+  // State-д байгаа хариултыг бааз руу хадгална.
+  // Баталгаажуулсан хариултын тоо, асуултын тоо тэнцүү бол шууд хаана.
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -187,55 +191,45 @@ const Verification = () => {
       });
 
       getData();
-    }
-
-    // Асуултын тоо, баталгаажуулалтын тоо тэнцүү бол үнэлгээний баталгаажуулалтыг шууд дуусгана.
-    if (verifications === questions) {
-      handleFinish(event);
+    } else {
+      toast.success("Бүх өөрчлөлт хадгалагдсан байна.", {
+        duration: toastperiod,
+        position: "top-right",
+        className: "bg-green-400 text-white",
+        style: {
+          border: "2px solid rgb(192, 38, 19)",
+        },
+      });
     }
   };
 
+  // Баталгаажаагүй асуултуудыг бүгдийг шууд баталгаажуулах замаар Баталгаажуулалтыг шууд дуусгана.
   const handleFinish = async (event) => {
     event.preventDefault();
 
-    // Асуултын тоо, баталгаажуулалтын тоо хоорондоо тэнцэхгүй бол өөрчлөлт ороогүй буюу баталгаажуулаагүй хариултуудыг бүгдийг автоматаар баталгаажуулна.
-    if (verifications !== questions) {
-      await instance
-        .post("/verify", {
-          yearId: verification?.yearId,
-          assessmentId: verification?.assessmentId,
-          organizationId: verification?.organizationId,
-        })
-        .then((result) => {
-          if (result.status === 200) {
-            toast.success("Үнэлгээний бүх хариултыг баталгаажууллаа.", {
-              duration: 2000,
-              position: "top-right",
-              className: "bg-green-400 text-white",
-              style: {
-                border: "2px solid rgb(192, 38, 19)",
-              },
-            });
-          } else {
-            toast.error(
-              "Үнэлгээний хариултуудыг баталгаажуулахад алдаа гарлаа.",
-              {
-                duration: 2000,
-                position: "top-right",
-                className: "bg-red-400 text-white",
-                style: {
-                  border: "2px solid rgb(192, 38, 19)",
-                },
-              }
-            );
-          }
-        })
-        .catch((error) => {
-          console.log("ERROR: ", error);
+    // Баталгаажуулаагүй хариултуудыг бүгдийг автоматаар баталгаажуулна.
+    // Тэнцүү байвал бүх хариултууд баталгаажсан гэж үзнэ.
+    await instance
+      .post("/verify", {
+        yearId: verification?.yearId,
+        assessmentId: verification?.assessmentId,
+        organizationId: verification?.organizationId,
+      })
+      .then((result) => {
+        if (result.status === 200) {
+          toast.success("Үнэлгээний бүх хариултыг баталгаажууллаа.", {
+            duration: toastperiod,
+            position: "top-right",
+            className: "bg-green-400 text-white",
+            style: {
+              border: "2px solid rgb(192, 38, 19)",
+            },
+          });
+        } else {
           toast.error(
             "Үнэлгээний хариултуудыг баталгаажуулахад алдаа гарлаа.",
             {
-              duration: 2000,
+              duration: toastperiod,
               position: "top-right",
               className: "bg-red-400 text-white",
               style: {
@@ -243,8 +237,19 @@ const Verification = () => {
               },
             }
           );
+        }
+      })
+      .catch((error) => {
+        console.log("ERROR: ", error);
+        toast.error("Үнэлгээний хариултуудыг баталгаажуулахад алдаа гарлаа.", {
+          duration: toastperiod,
+          position: "top-right",
+          className: "bg-red-400 text-white",
+          style: {
+            border: "2px solid rgb(192, 38, 19)",
+          },
         });
-    }
+      });
 
     // Үнэлгээний төлвийг өөрчилнө.
     await instance
@@ -257,7 +262,7 @@ const Verification = () => {
       .then(async (result) => {
         if (result.status === 200) {
           toast.success("Үнэлгээ илгээгдлээ.", {
-            duration: 2000,
+            duration: toastperiod,
             position: "top-right",
             className: "bg-green-400 text-white",
             style: {
@@ -274,7 +279,7 @@ const Verification = () => {
             .then((result) => {
               if (result.status === 200) {
                 toast.success("Автомат мэдэгдэл илгээгдлээ.", {
-                  duration: 2000,
+                  duration: toastperiod,
                   position: "top-right",
                   className: "bg-green-400 text-white",
                   style: {
@@ -285,7 +290,7 @@ const Verification = () => {
                 toast.error(
                   "Автомат мэдэгдэл илгээгдсэнгүй. Та гараар мэдэгдэнэ үү.",
                   {
-                    duration: 2000,
+                    duration: toastperiod,
                     position: "top-right",
                     className: "bg-red-400 text-white",
                     style: {
@@ -300,7 +305,7 @@ const Verification = () => {
               toast.error(
                 "Автомат мэдэгдэл илгээгдсэнгүй. Та гараар мэдэгдэнэ үү.",
                 {
-                  duration: 2000,
+                  duration: toastperiod,
                   position: "top-right",
                   className: "bg-red-400 text-white",
                   style: {
@@ -311,7 +316,7 @@ const Verification = () => {
             });
         } else {
           toast.error("Үнэлгээ илгээхэд алдаа гарлаа.", {
-            duration: 2000,
+            duration: toastperiod,
             position: "top-right",
             className: "bg-red-400 text-white",
             style: {
@@ -323,7 +328,7 @@ const Verification = () => {
       .catch((error) => {
         console.log("ERROR: ", error);
         toast.error("Үнэлгээ илгээхэд алдаа гарлаа.", {
-          duration: 2000,
+          duration: toastperiod,
           position: "top-right",
           className: "bg-red-400 text-white",
           style: {
@@ -332,7 +337,7 @@ const Verification = () => {
         });
       });
 
-    redirect("/assessments");
+    router.replace("/assessments");
   };
 
   if (isLoading || !shouldFetch) {
@@ -383,6 +388,7 @@ const Verification = () => {
             verificationCount={verificationCount}
             handleSubmit={handleSubmit}
             handleFinish={handleFinish}
+            length={optionAnswer?.options?.length}
           />
         </div>
       </div>

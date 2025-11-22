@@ -1,4 +1,4 @@
-import React, { useMemo, Fragment } from "react";
+import React, { useMemo } from "react";
 import useSWR from "swr";
 
 import { useSystemStore } from "@/stores/storeSystem";
@@ -8,6 +8,14 @@ import { fetcher } from "@/libs/client";
 import PieDefault from "@/components/charts/Pie";
 import clsx from "clsx";
 import { useTranslation } from "@/hooks/useTranslation";
+import {
+  STATUS_DONE,
+  STATUS_FILLING,
+  STATUS_NEW,
+  STATUS_SENT,
+  STATUS_VERIFIED,
+  STATUS_VERIFYING,
+} from "@/libs/constants";
 
 const OrganizationDashboard = () => {
   const { system } = useSystemStore();
@@ -16,7 +24,10 @@ const OrganizationDashboard = () => {
   const isGet = user?.organizationId && system?.yearId;
 
   const uris = useMemo(() => {
-    return ["/statistics/organizations/" + user?.organizationId];
+    return [
+      "/statistics/organizations/" + user?.organizationId,
+      "/statistics/verifications/" + user?.organizationId,
+    ];
   }, [user]);
 
   const {
@@ -37,8 +48,8 @@ const OrganizationDashboard = () => {
     console.error(error);
   }
 
-  console.log("A: ", allDatas[0]);
-  //   console.log("S: ", system);
+  // console.log("A: ", allDatas[1]);
+  // console.log("S: ", system);
   // console.log("U: ", user);
   // console.log("D: ", savedAnswers);
   return (
@@ -47,7 +58,8 @@ const OrganizationDashboard = () => {
         <p className="mt-10 mb-5 font-bold text-blue-900 text-xl">
           {system?.year}
         </p>
-        <div>
+        <div className="flex flex-col gap-16">
+          {/* Бөглөлтийн процессын хэсгийн dashboard */}
           {allDatas[0]?.assessments?.map((data, index) => {
             const performance = allDatas[0]?.performances.find(
               (p) => p.assessmentId === data.id
@@ -60,16 +72,51 @@ const OrganizationDashboard = () => {
             )?.count;
 
             return (
-              <Fragment key={index}>
+              <div key={index}>
                 <p className="text-center">{data?.name}</p>
+                <p className="text-center">({t("dashboard.Filling")})</p>
                 <PieDefault total={questions} performance={answers} />
                 <div className="flex justify-between items-center text-sm">
                   <p>{t("dashboard.Status")}</p>
                   <p className={clsx("text-center font-semibold uppercase")}>
-                    {performance?.Status?.name}
+                    {[STATUS_NEW, STATUS_FILLING, STATUS_SENT].includes(
+                      performance?.Status?.id
+                    )
+                      ? performance?.Status?.name
+                      : "БӨГЛӨЖ ДУУССАН"}
                   </p>
                 </div>
-              </Fragment>
+              </div>
+            );
+          })}
+          {/* Баталгаажуулалтын процессын хэсгийн dashboard */}
+          {allDatas[1]?.assessments?.map((data, index) => {
+            const performance = allDatas[1]?.performances.find(
+              (p) => p.assessmentId === data.id
+            );
+            const questions = allDatas[1]?.questions.find(
+              (q) => q.assessmentId === data.id
+            )?.count;
+            const answers = allDatas[1]?.answers.find(
+              (q) => q.assessmentId === data.id && q.yearId === system?.yearId
+            )?.count;
+
+            return (
+              <div key={index}>
+                <p className="text-center">{data?.name}</p>
+                <p className="text-center">({t("dashboard.Verifying")})</p>
+                <PieDefault total={questions} performance={answers} />
+                <div className="flex justify-between items-center text-sm">
+                  <p>{t("dashboard.Status")}</p>
+                  <p className={clsx("text-center font-semibold uppercase")}>
+                    {[STATUS_VERIFYING, STATUS_VERIFIED, STATUS_DONE].includes(
+                      performance?.Status?.id
+                    )
+                      ? performance?.Status?.name
+                      : "ШИНЭ"}
+                  </p>
+                </div>
+              </div>
             );
           })}
         </div>

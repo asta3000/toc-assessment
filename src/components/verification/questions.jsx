@@ -13,7 +13,6 @@ import {
 } from "@/libs/constants";
 import { useSystemStore } from "@/stores/storeSystem";
 import { SolidButton } from "../MyButton";
-import { useAssessmentStore } from "@/stores/storeAssessment";
 import { VerificationOptions } from "./options";
 import { DataEditorBySlug } from "@/functions/Data";
 import { MyStatus } from "../MyText";
@@ -207,7 +206,7 @@ const Questions = (props) => {
     <form
       method="POST"
       className="border-[1px] border-gray-400/20 rounded-2xl p-6 text-sm"
-      onSubmit={(event) => props.handleSubmit(event)}
+      onSubmit={(e) => e.preventDefault()}
     >
       {props.datas[3]
         ?.filter((qt) => qt.moduleId === props.module?.id)
@@ -265,29 +264,36 @@ const Questions = (props) => {
           />
         ) : (
           <div className="flex justify-center items-center gap-2">
-            {verifications !== questions && (
+            {props.length > 0 && (
               <SolidButton
                 color="green"
                 size="small"
                 label={t("action.Save")}
+                onClick={props.handleSubmit}
+                type="button"
+                action="verification"
               />
             )}
 
-            {verifications !== questions && (
+            {verifications !== questions && props.length === 0 && (
               <SolidButton
                 color="blue"
                 size="small"
                 label={t("action.SaveAllSend")}
                 onClick={props.handleFinish}
+                type="button"
+                action="verification"
               />
             )}
 
-            {verifications === questions && (
+            {verifications === questions && props.length === 0 && (
               <SolidButton
                 color="red"
                 size="small"
                 label={t("action.Send")}
                 onClick={props.handleFinish}
+                type="button"
+                action="verification"
               />
             )}
           </div>

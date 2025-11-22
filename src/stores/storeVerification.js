@@ -3,10 +3,11 @@ import { create } from "zustand";
 const initial = {
   id: null,
   organizationId: null,
+  organization: null,
   yearId: null,
+  year: null,
   assessmentId: null,
-  cycle: 0,
-  isVerified: false,
+  assessment: null,
   statusId: null,
 };
 

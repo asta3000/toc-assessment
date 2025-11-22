@@ -6,6 +6,7 @@ import React from "react";
 import { SolidButton } from "../MyButton";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useVerificationStore } from "@/stores/storeVerification";
+import PieDefault from "@/components/charts/Pie";
 
 const Module = (props) => {
   const t = useTranslation();
@@ -17,13 +18,10 @@ const Module = (props) => {
     props.questions?.reduce((c, el) => c + (el.count ?? 0), 0) ?? 0;
   const verifications =
     props.verificationCount?.reduce((c, el) => c + (el.count ?? 0), 0) ?? 0;
+
   return (
     <div className="w-full flex flex-col gap-4 items-center justify-center">
-      <div className="flex items-center justify-center gap-1 text-5xl font-semibold text-blue-900">
-        <p>
-          {verifications} / {questions}
-        </p>
-      </div>
+      <PieDefault total={questions} performance={verifications} />
       <ul className="text-sm w-full">
         {props.modules?.map((module, index) => {
           const verificationNum =
@@ -59,7 +57,7 @@ const Module = (props) => {
       >
         {!disabled && (
           <div className="flex justify-center items-center gap-2 flex-wrap">
-            {(verifications !== questions || props.length > 0) && (
+            {props.length > 0 && (
               <SolidButton
                 color="green"
                 size="small"

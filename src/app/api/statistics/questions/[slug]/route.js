@@ -6,6 +6,8 @@ import { prisma } from "@/libs/client";
 import cors from "@/libs/cors";
 import { geterror } from "@/libs/constants";
 
+// Тухайн үнэлгээний асуултын тоог модулиар нь тоолж гаргана.
+// Модуль тус бүрийн бөглөлтийг хянахад ашиглана.
 export const GET = async (req, { params }) => {
   const { slug } = await params;
   let questions;

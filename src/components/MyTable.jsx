@@ -392,6 +392,7 @@ export const AssessmentTable = (props) => {
         {props?.allDatas[0]
           ?.filter((d) => d.yearId === props.year.id)
           ?.map((data, index) => {
+            console.log("D: ", data);
             return (
               <tr key={index} className="hover:bg-blue-50 h-8">
                 {props.metadatas?.map((metadata, index) => {
@@ -453,11 +454,9 @@ export const AssessmentTable = (props) => {
                             organizationId: data.organizationId,
                             organization: data?.Organization?.name,
                             yearId: data.yearId,
-                            year: data?.Year?.name,
+                            year: props.year.name,
                             assessmentId: data.assessmentId,
                             assessment: data?.Assessment?.name,
-                            cycle: data.cycle,
-                            isVerified: data.isVerified,
                             statusId: data?.statusId,
                           });
 
@@ -498,27 +497,29 @@ export const AssessmentTable = (props) => {
                               );
                             }}
                           />
-                          <MdOutlineCancel
-                            size={24}
-                            className={clsx(
-                              "cursor-pointer hover:scale-125 transition-all duration-300 ease-in-out"
-                            )}
-                            title={t("assessment.decline")}
-                            onClick={() => {
-                              props.handleAction(
-                                {
-                                  id: data.id,
-                                  statusId: STATUS_FILLING,
-                                  cycle: Number(data.cycle),
-                                },
-                                {
-                                  organizationId: data.organizationId,
-                                  yearId: data.yearId,
-                                  assessmentId: data.assessmentId,
-                                }
-                              );
-                            }}
-                          />
+                          {data?.cycle !== 2 && (
+                            <MdOutlineCancel
+                              size={24}
+                              className={clsx(
+                                "cursor-pointer hover:scale-125 transition-all duration-300 ease-in-out"
+                              )}
+                              title={t("assessment.decline")}
+                              onClick={() => {
+                                props.handleAction(
+                                  {
+                                    id: data.id,
+                                    statusId: STATUS_FILLING,
+                                    cycle: Number(data.cycle),
+                                  },
+                                  {
+                                    organizationId: data.organizationId,
+                                    yearId: data.yearId,
+                                    assessmentId: data.assessmentId,
+                                  }
+                                );
+                              }}
+                            />
+                          )}
                         </Fragment>
                       )}
                   </div>

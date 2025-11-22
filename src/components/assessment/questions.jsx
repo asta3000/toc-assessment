@@ -5,7 +5,16 @@ import React from "react";
 import lodash from "lodash";
 
 import { useTranslation } from "@/hooks/useTranslation";
-import { CHECKBOX, RADIO, STATUS_SENT, TEXT, textblue } from "@/libs/constants";
+import {
+  CHECKBOX,
+  RADIO,
+  STATUS_DONE,
+  STATUS_SENT,
+  STATUS_VERIFIED,
+  STATUS_VERIFYING,
+  TEXT,
+  textblue,
+} from "@/libs/constants";
 import { useSystemStore } from "@/stores/storeSystem";
 import { SolidButton } from "../MyButton";
 import { useUserStore } from "@/stores/storeUser";
@@ -19,7 +28,12 @@ const Questions = (props) => {
   const { system } = useSystemStore();
   const { user } = useUserStore();
   const { assessment } = useAssessmentStore();
-  const disabled = [STATUS_SENT].includes(assessment?.statusId);
+  const disabled = [
+    STATUS_SENT,
+    STATUS_VERIFYING,
+    STATUS_VERIFIED,
+    STATUS_DONE,
+  ].includes(assessment?.statusId);
   const t = useTranslation();
   // console.log(disabled);
 

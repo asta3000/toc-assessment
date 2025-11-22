@@ -36,21 +36,17 @@ export const SolidButton = (props) => {
             : bggreen,
         props.size === "small" ? "text-sm" : "text-md"
       )}
+      type={props.type}
       onClick={(event) => {
-        // console.log(props.action);
-        lodash.isEmpty(props.action)
-          ? handleClickAdd(props.setModal, props.setData, props.setSavedScrollY)
-          : props.action === "cancel"
-            ? handleClickCancel(
-                props.setModal,
-                props.setData,
-                props.savedScrollY
-              )
-            : props.action === "decline"
-              ? props.setData()
-              : null;
-
-        props.onClick && props.onClick(event);
+        props.onClick
+          ? props.onClick(event)
+          : lodash.isEmpty(props.action)
+            ? handleClickAdd(props.setModal, props.setData)
+            : props.action === "cancel"
+              ? handleClickCancel(props.setModal, props.setData)
+              : props.action === "decline"
+                ? props.setData()
+                : null;
       }}
     >
       {props.label}

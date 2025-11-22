@@ -27,6 +27,7 @@ export const PUT = async (req) => {
       }
 
       // Баталгаажуулагчийн оноог бүгдийг 0 болгосны дараа шинээр ирсэн оноог хадгална.
+      // Зорилго нь бөглөх үед үүссэн хариулт өөрчлөгдөж болох тул баталгаажуулах үед баталгаажуулагчийн оноог шинээр тавих зорилготой.
       await tx.optionAnswer.updateMany({
         where: {
           assessmentId: optionAnswer?.assessmentId,
@@ -39,9 +40,12 @@ export const PUT = async (req) => {
         },
       });
 
+      // Хариултын хувилбарт баталгаажуулагчийн оноотой хэсгийг авна.
+      // FrontEnd-ээс бөглөх үеийн оноо болон өөрчлөлтийн оноо зэрэг ирнэ.
       const options = optionAnswer.options?.filter((a) => a.score_verify);
 
       for (const a of options) {
+        // console.log("O: ", a);
         if (a.id) {
           const data = {
             verifierId: answer.verifierId,
@@ -58,15 +62,16 @@ export const PUT = async (req) => {
             yearId: optionAnswer.yearId,
             assessmentId: optionAnswer.assessmentId,
             moduleId: optionAnswer.moduleId,
-            userId: optionAnswer.userId ?? null,
             questionId: optionAnswer.questionId,
             answerTypeId: CHECKBOX,
             optionId: a.optionId,
             score_user: 0,
-            score_verify: Number(a.score_verify) ?? 0,
+            score_verify: Number(a.score_verify),
             description: null,
             verifierId: optionAnswer.verifierId,
           };
+
+          // console.log("D: ", data);
 
           await tx.optionAnswer.create({
             data,
@@ -74,6 +79,7 @@ export const PUT = async (req) => {
         }
       }
 
+      // Гүйцэтгэлийн төлвийг өөрчлөх
       const performance = await tx.performance.findMany({
         where: {
           organizationId: answer.organizationId,
@@ -84,7 +90,7 @@ export const PUT = async (req) => {
 
       if (performance.length === 1) {
         await tx.performance.update({
-          where: { id: performance[0].id },
+          where: { id: performance[0]?.id },
           data: {
             statusId: STATUS_VERIFYING,
           },

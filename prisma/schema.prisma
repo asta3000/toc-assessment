@@ -323,8 +323,8 @@ model Answer {
 
 model OptionAnswer {
   id             String       @id @default(auto()) @map("_id") @db.ObjectId
-  score_user     Float
-  score_verify   Float
+  score_user     Float        @default(0)
+  score_verify   Float        @default(0)
   verifierId     String?      @db.ObjectId
   Verifier       User?        @relation("verifierId", fields: [verifierId], references: [id])
   description    String?
@@ -332,8 +332,8 @@ model OptionAnswer {
   updatedAt      DateTime?    @updatedAt
   Organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId String       @db.ObjectId
-  User           User         @relation("userId", fields: [userId], references: [id])
-  userId         String       @db.ObjectId
+  User           User?        @relation("userId", fields: [userId], references: [id])
+  userId         String?      @db.ObjectId
   Year           Year         @relation(fields: [yearId], references: [id])
   yearId         String       @db.ObjectId
   Assessment     Assessment   @relation(fields: [assessmentId], references: [id])

@@ -8,7 +8,6 @@ import { CYCLE, puterror, STATUS_FILLING } from "@/libs/constants";
 
 export const PUT = async (req, { params }) => {
   let data;
-  let urlEmail;
   const { slug } = await params;
   try {
     const { statusId, cycle } = await req.json();
@@ -16,14 +15,15 @@ export const PUT = async (req, { params }) => {
     await prisma.$transaction(async (tx) => {
       // Байгууллагын хариунаас хамаарч үнэлгээний төлөв өөрчлөлт
 
-      const cycle = await tx.parameter.findFirst({
+      const cycleMax = await tx.parameter.findFirst({
         where: {
           id: CYCLE,
         },
       });
 
-      // Дууссан төлөвтэй бол шууд төлөв солино.
-      if (statusId === STATUS_FILLING && cycle < Number(cycle[0]?.value)) {
+      // Буцаах тоо нь параметр дэх утгаас бага бол буцаах тоог 1-ээр нэмнэ.
+      // Буцаах тоо нь параметр дэх утгатай тэнцүү бол шууд дуусгана.
+      if (statusId === STATUS_FILLING && cycle < Number(cycleMax?.value)) {
         data = {
           statusId,
           cycle: Number(cycle) + 1,

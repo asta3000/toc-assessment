@@ -14,7 +14,7 @@ export const handleClickAdd = (setModal, setData) => {
   setData({});
 };
 
-export const handleClickCancel = (setModal, setData, savedScrollY) => {
+export const handleClickCancel = (setModal, setData) => {
   setData({});
   setModal({
     open: false,

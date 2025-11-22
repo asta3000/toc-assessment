@@ -4,8 +4,9 @@ import { NextResponse } from "next/server";
 
 import { prisma } from "@/libs/client";
 import cors from "@/libs/cors";
-import { posterror, STATUS_DONE } from "@/libs/constants";
+import { posterror } from "@/libs/constants";
 
+// Баталгаажуулаагүй бүх хариултыг бүхэлд нь баталгаажуулахад ашиглана.
 export const POST = async (req) => {
   try {
     const { organizationId, yearId, assessmentId } = await req.json();

@@ -7,6 +7,7 @@ const initial = {
   goal: null,
   content: null,
   statusId: null,
+  year: null,
   assessmentId: null,
 };
 

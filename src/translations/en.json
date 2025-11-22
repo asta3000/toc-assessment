@@ -146,6 +146,8 @@
     "comment": "Verifier's comment"
   },
   "dashboard": {
-    "Status": "Status"
+    "Status": "Status",
+    "Filling": "FILLING",
+    "Verifying": "VERIFYING"
   }
 }

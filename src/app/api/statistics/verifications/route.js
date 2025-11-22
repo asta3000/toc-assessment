@@ -6,6 +6,8 @@ import { prisma } from "@/libs/client";
 import cors from "@/libs/cors";
 import { geterror } from "@/libs/constants";
 
+// Тухайн байгууллага, тухайн жил, тухайн үнэлгээний баталгаажсан байдлыг харна.
+// Давхардсан хариултуудыг нэгтгэх ба модулиар нь групплэж харна.
 export const POST = async (req) => {
   const { assessmentId, organizationId, yearId } = await req.json();
   let answers;

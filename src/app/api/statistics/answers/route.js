@@ -6,6 +6,8 @@ import { prisma } from "@/libs/client";
 import cors from "@/libs/cors";
 import { geterror } from "@/libs/constants";
 
+// Тухайн байгууллага, тухайн жил, тухайн үнэлгээний хэдэн асуултыг хариулсан байгааг харна.
+// Давхардсан асуултуудыг дугаараар нь нэгтгээд, модулийн дугаараар групплээд хардаг.
 export const POST = async (req) => {
   const { assessmentId, organizationId, yearId } = await req.json();
   let answers;

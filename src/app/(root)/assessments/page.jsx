@@ -16,6 +16,7 @@ import {
   ORGANIZATION,
   // STATUS_DONE,
   STATUS_FILLING,
+  toastperiod,
 } from "@/libs/constants";
 import { useSystemStore } from "@/stores/storeSystem";
 import AssessmentPurpose from "@/components/assessment/purpose";
@@ -86,7 +87,7 @@ const Assessments = () => {
       .then(async (result) => {
         if (result.status === 200) {
           toast.success("Үйлдлийг амжилттай гүйцэтгэлээ.", {
-            duration: 2000,
+            duration: toastperiod,
             position: "top-right",
             className: "bg-green-400 text-white",
             style: {
@@ -100,7 +101,7 @@ const Assessments = () => {
             .then((result) => {
               if (result.status === 200) {
                 toast.success("Автомат мэдэгдэл илгээгдлээ.", {
-                  duration: 2000,
+                  duration: toastperiod,
                   position: "top-right",
                   className: "bg-green-400 text-white",
                   style: {
@@ -111,7 +112,7 @@ const Assessments = () => {
                 toast.error(
                   "Автомат мэдэгдэл илгээгдсэнгүй. Та гараар мэдэгдэнэ үү.",
                   {
-                    duration: 2000,
+                    duration: toastperiod,
                     position: "top-right",
                     className: "bg-red-400 text-white",
                     style: {
@@ -126,7 +127,7 @@ const Assessments = () => {
               toast.error(
                 "Автомат мэдэгдэл илгээгдсэнгүй. Та гараар мэдэгдэнэ үү.",
                 {
-                  duration: 2000,
+                  duration: toastperiod,
                   position: "top-right",
                   className: "bg-red-400 text-white",
                   style: {
@@ -137,7 +138,7 @@ const Assessments = () => {
             });
         } else {
           toast.error("Үйлдлийг гүйцэтгэхэд алдаа гарлаа.", {
-            duration: 2000,
+            duration: toastperiod,
             position: "top-right",
             className: "bg-red-400 text-white",
             style: {
@@ -149,7 +150,7 @@ const Assessments = () => {
       .catch((error) => {
         console.log("ERROR: ", error);
         toast.error("Үйлдлийг гүйцэтгэхэд алдаа гарлаа.", {
-          duration: 2000,
+          duration: toastperiod,
           position: "top-right",
           className: "bg-red-400 text-white",
           style: {
