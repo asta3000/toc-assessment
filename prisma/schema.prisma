@@ -255,6 +255,7 @@ model Question {
   SubQuestion    SubQuestion[]
   Option         Option[]
   condition      Float?         @default(0)
+  order          Int            @default(0)
   Answer         Answer[]
   OptionAnswer   OptionAnswer[]
 }

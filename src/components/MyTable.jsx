@@ -252,107 +252,197 @@ export const ListTable = (props) => {
   );
 };
 
+import {
+  DndContext,
+  closestCenter,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  SortableContext,
+  useSortable,
+  verticalListSortingStrategy,
+  arrayMove,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+
 export const QuestionnaireTable = (props) => {
   const { system } = useSystemStore();
   const t = useTranslation();
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
+  );
+
+  const handleDragEnd = (event) => {
+    // active нь чирж яваа мөр
+    // over нь даруулж байгаа мөр
+    const { active, over } = event;
+
+    // !over нь гадуур тавьсан нөхцөл
+    // active === over гэдэг нь тухайн мөрийг өөр дээр нь буцааж тавьсан.
+    // эдгээр нөхцөлд ямар нэг үйлдэл хийхгүй
+    if (!over || active.id === over.id || !props.sortable) return;
+
+    // чирж яваа мөрний анхны байрлалыг олох
+    const oldIndex = props.datas.findIndex((i) => i.id === active.id);
+
+    // чирж яваа мөрний шинэ байрлалыг олох
+    const newIndex = props.datas.findIndex((i) => i.id === over.id);
+
+    const movedOrder = arrayMove(props.datas, oldIndex, newIndex);
+
+    // өөрчлөгдсөний дараа order талбар дахь утгыг шинээр тогтоож байна.
+    const newOrder = movedOrder.map((item, index) => ({
+      ...item,
+      order: index,
+    }));
+
+    // Шинэ дарааллыг хадгалах
+    props.handleReOrder(newOrder);
+  };
+
   return (
-    <table
-      className="w-full border-[1px] border-black text-sm"
-      cellSpacing={0}
-      cellPadding={5}
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      onDragEnd={handleDragEnd}
     >
-      <thead className="font-semibold ">
-        <tr className="bg-blue-200 h-10">
-          {props?.metadatas?.map((metadata, index) => {
-            return (
+      <SortableContext
+        items={props.datas?.map((i) => i.id)}
+        strategy={verticalListSortingStrategy}
+      >
+        <table
+          className="w-full border-[1px] border-black text-sm"
+          cellSpacing={0}
+          cellPadding={5}
+        >
+          <thead className="font-semibold ">
+            <tr className="bg-blue-200 h-10">
+              {props?.metadatas?.map((metadata, index) => {
+                return (
+                  <td
+                    key={index}
+                    align={metadata.align}
+                    className="border-[1px] border-black text-gray-900"
+                  >
+                    {system.language === "mn"
+                      ? metadata.name
+                      : metadata.name_en}
+                  </td>
+                );
+              })}
               <td
-                key={index}
-                align={metadata.align}
+                align="center"
                 className="border-[1px] border-black text-gray-900"
               >
-                {system.language === "mn" ? metadata.name : metadata.name_en}
+                {t("action.title")}
               </td>
-            );
-          })}
+            </tr>
+          </thead>
+
+          <tbody>
+            {props?.datas
+              ?.filter((element) => {
+                if (props?.search !== null) {
+                  return Object.values(element)
+                    .slice(1)
+                    .join(" ")
+                    .toLowerCase()
+                    .includes(props?.search?.toLowerCase());
+                } else {
+                  return true;
+                }
+              })
+              ?.map((data, index) => {
+                return (
+                  <SortableRow
+                    key={index}
+                    data={data}
+                    metadatas={props.metadatas}
+                    handleClickDetail={props.handleClickDetail}
+                    handleClickEdit={props.handleClickEdit}
+                    setModal={props.setModal}
+                    setData={props.setData}
+                  />
+                );
+              })}
+          </tbody>
+        </table>
+      </SortableContext>
+    </DndContext>
+  );
+};
+
+const SortableRow = (props) => {
+  const t = useTranslation();
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: props.data.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
+  return (
+    <tr
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+      className="hover:bg-blue-50 h-8"
+    >
+      {props.metadatas?.map((metadata, index) => {
+        return (
           <td
-            align="center"
-            className="border-[1px] border-black text-gray-900"
+            key={index}
+            align={metadata.align}
+            width={metadata.width}
+            className="border-[1px] border-black text-gray-600 hover:text-gray-800 cursor-default p-1"
           >
-            {t("action.title")}
+            {metadata.type === "select"
+              ? lodash.isEmpty(metadata.selection)
+                ? metadata.field === "assessmentId"
+                  ? props.data?.Assessment?.name
+                  : metadata.field === "moduleId"
+                    ? props.data?.Module?.name + ". " + props.data?.Module?.goal
+                    : metadata.field === "questionTypeId"
+                      ? props.data?.QuestionType?.name
+                      : metadata.field === "answerTypeId"
+                        ? props.data?.AnswerType?.name
+                        : null
+                : metadata.selection.filter(
+                    (s) => s.value === props.data[metadata.field]
+                  )[0]?.description
+              : props.data[metadata.field]}
           </td>
-        </tr>
-      </thead>
-      <tbody>
-        {props?.datas
-          ?.filter((element) => {
-            if (props?.search !== null) {
-              return Object.values(element)
-                .slice(1)
-                .join(" ")
-                .toLowerCase()
-                .includes(props?.search?.toLowerCase());
-            } else {
-              return true;
+        );
+      })}
+      <td
+        align="center"
+        width="10%"
+        className="border-[1px] border-black text-gray-600 hover:text-gray-800 cursor-default p-1"
+      >
+        <div className="flex justify-center items-center gap-4">
+          <IoEyeOutline
+            size={20}
+            className="cursor-pointer"
+            title={t("action.Detail")}
+            onClick={() =>
+              handleClickDetail(props.data, props.setData, props.setModal)
             }
-          })
-          ?.map((data, index) => {
-            return (
-              <tr key={index} className="hover:bg-blue-50 h-8">
-                {props.metadatas?.map((metadata, index) => {
-                  return (
-                    <td
-                      key={index}
-                      align={metadata.align}
-                      width={metadata.width}
-                      className="border-[1px] border-black text-gray-600 hover:text-gray-800 cursor-default p-1"
-                    >
-                      {metadata.type === "select"
-                        ? lodash.isEmpty(metadata.selection)
-                          ? metadata.field === "assessmentId"
-                            ? data?.Assessment?.name
-                            : metadata.field === "moduleId"
-                              ? data?.Module?.name + ". " + data?.Module?.goal
-                              : metadata.field === "questionTypeId"
-                                ? data?.QuestionType?.name
-                                : metadata.field === "answerTypeId"
-                                  ? data?.AnswerType?.name
-                                  : null
-                          : metadata.selection.filter(
-                              (s) => s.value === data[metadata.field]
-                            )[0]?.description
-                        : data[metadata.field]}
-                    </td>
-                  );
-                })}
-                <td
-                  align="center"
-                  width="10%"
-                  className="border-[1px] border-black text-gray-600 hover:text-gray-800 cursor-default p-1"
-                >
-                  <div className="flex justify-center items-center gap-4">
-                    <IoEyeOutline
-                      size={20}
-                      className="cursor-pointer"
-                      title={t("action.Detail")}
-                      onClick={() =>
-                        handleClickDetail(data, props.setData, props.setModal)
-                      }
-                    />
-                    <PiPencilLineFill
-                      size={20}
-                      className="cursor-pointer"
-                      title={t("action.Edit")}
-                      onClick={() =>
-                        handleClickEdit(data, props.setData, props.setModal)
-                      }
-                    />
-                  </div>
-                </td>
-              </tr>
-            );
-          })}
-      </tbody>
-    </table>
+          />
+          <PiPencilLineFill
+            size={20}
+            className="cursor-pointer"
+            title={t("action.Edit")}
+            onClick={() =>
+              handleClickEdit(props.data, props.setData, props.setModal)
+            }
+          />
+        </div>
+      </td>
+    </tr>
   );
 };
 

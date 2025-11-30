@@ -13,8 +13,7 @@ export const GET = async () => {
       orderBy: [
         { Assessment: { name: "asc" } },
         { Module: { name: "asc" } },
-        { QuestionType: { name: "asc" } },
-        { name: "asc" },
+        { order: "asc" },
       ],
       include: {
         Assessment: { select: { id: true, name: true } },

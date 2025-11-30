@@ -40,6 +40,7 @@ export const PUT = async (req, { params }) => {
         },
       });
 
+      // console.log("Q: ", question);
       // Өөрчлөлт амжилтгүй нөхцөл
       if (!question) {
         throw new Error("Question not found or update failed.");
@@ -101,6 +102,7 @@ export const PUT = async (req, { params }) => {
       await Promise.all(
         subQuestions.map(async (subQuestion) => {
           const { id, name, name_en, status, questionId } = subQuestion;
+          // console.log("SQ: ", subQuestion);
 
           if (id) {
             await tx.subQuestion.upsert({
@@ -135,6 +137,7 @@ export const PUT = async (req, { params }) => {
       // Хариултын сонголтуудыг өөрчлөх
       await Promise.all(
         options.map(async (option) => {
+          // console.log("O: ", option);
           const {
             id,
             name,

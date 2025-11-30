@@ -8,7 +8,7 @@ import React, { Fragment, useEffect, useMemo, useState } from "react";
 import { Toaster } from "react-hot-toast";
 import useSWR from "swr";
 import lodash from "lodash";
-import { fetcher } from "@/libs/client";
+import { fetcher, instance } from "@/libs/client";
 import { FullSpinner } from "@/components/Spinner";
 import { FullModal } from "@/components/Modal";
 import { MyError } from "@/components/MyText";
@@ -17,6 +17,7 @@ import { QuestionnaireTable } from "@/components/MyTable";
 const QuestionsAnswers = () => {
   const [options, setOptions] = useState([]);
   const [subQuestions, setSubQuestions] = useState([]);
+  const sortable = true;
   const uris = useMemo(() => {
     return [
       "/questions",
@@ -90,6 +91,11 @@ const QuestionsAnswers = () => {
     }
   };
 
+  const handleReOrder = async (data) => {
+    await instance.put(uris[0] + "/reorder", data);
+    mutate();
+  };
+
   return (
     <div className="mx-20 flex flex-col justify-center items-start">
       <Toaster />
@@ -142,6 +148,8 @@ const QuestionsAnswers = () => {
               search={search}
               setModal={setModal}
               setData={setData}
+              handleReOrder={handleReOrder}
+              sortable={sortable}
             />
           )}
         </Fragment>
